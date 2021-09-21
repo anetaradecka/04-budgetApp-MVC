@@ -55,4 +55,12 @@ class User extends \Core\Model
             return false;
         }
     }
+
+    public static function getLogin() {
+        return isset($_POST['login']) ? $_POST['login'] : null;
+    }
+
+    public static function getPassword() {
+        return isset($_POST['password']) ? $_POST['password'] : null;
+    }
 }

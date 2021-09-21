@@ -12,7 +12,8 @@ use \App\Models\User;
  */
 class SignIn extends \Core\Controller
 {
-
+    public $dziala = null;
+    
     /**
      * Show the index page
      *
@@ -25,21 +26,12 @@ class SignIn extends \Core\Controller
 
     protected function before()
     {
-        if (User::signIn($this->getLogin(), $this->getPassword()))
+        if (User::signIn(User::getLogin(), User::getPassword()))
         {
-            session_start();
-        }
-        
-        
+            // session_start();
+        }       
     }
 
-    private function getLogin() {
-        return isset($_POST['login']) ? $_POST['login'] : null;
-    }
-
-    private function getPassword() {
-        return isset($_POST['password']) ? $_POST['password'] : null;
-    }
 }
 
 // <?php
