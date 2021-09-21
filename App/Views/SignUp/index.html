@@ -1,0 +1,74 @@
+{% extends "nonavbase.html" %} {% block title %}Create a new account{% endblock %} {% block body %}
+
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+
+<main class="d-flex justify-content-center align-items-center vh-100 vw-100">
+    <div id="container">
+        <header id="logo">
+            <h2>Open an account to </br> get started</h2>
+            <hr>
+        </header>
+
+        <div id="content">
+            <form method="post">
+                {% if user_created %}
+                <div class="alert alert-primary" role="alert">
+                    A new user has been created!
+                </div>{% endif %}
+
+                <!-- BREAK -->
+
+                {% if user_exists %}
+                <div class="alert alert-danger" role="alert">
+                    That user already exists!
+                </div>
+                {% endif %}
+
+                <div class="input-group mb-5 input-group-lg ps-3 pe-3">
+                    <span class="input-group-text" id="basic-addon1"><i class="fas fa-user fa-lg"></i></span>
+                    <input type="text" class="form-control" name="nick" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
+                </div>
+
+                {% if nick_error %}
+                <div class="alert alert-danger" role="alert">
+                    Incorrect nick!
+                </div>
+                {% endif %}
+
+                <div class="input-group mb-3 input-group-lg ps-3 pe-3">
+                    <span class="input-group-text" id="basic-addon2"><i class="fas fa-unlock-alt fa-lg"></i></span>
+                    <input type="password" class="form-control" name="password1" id="exampleInputPassword1" placeholder="Password" aria-describedby="basic-addon2">
+                </div>
+
+                {% if password_error %}
+                <div class="alert alert-danger" role="alert">
+                    Incorrect password!
+                </div>
+                {% endif %}
+
+                <div class="input-group mb-5 input-group-lg ps-3 pe-3">
+                    <span class="input-group-text" id="basic-addon2"><i class="fas fa-unlock-alt fa-lg"></i></span>
+                    <input type="password" class="form-control" name="password2" id="exampleInputPassword1" placeholder="Repeat password" aria-describedby="basic-addon2">
+                </div>
+
+                <script>
+                    function cb() {
+                        document.querySelector('button[type="submit"]').removeAttribute('disabled');
+                    }
+                </script>
+
+                <div class="g-recaptcha mb-5 d-flex justify-content-center" data-callback="cb" data-sitekey="6LeF4DgcAAAAAFtvA3G4VPNhDlPUxH3Ix37Je-uR"></div>
+
+                <div class="mb-5 d-flex justify-content-center">
+                    <button type="submit" class="btn btn-warning btn-lg" disabled>Open an account</button>
+                </div>
+
+                <div class="d-flex justify-content-center">
+                    <p class="text-white">Already a member? I <a href="index.php">Sign in to your account</a></p>
+                </div>
+            </form>
+        </div>
+    </div>
+</main>
+
+{% endblock %}

@@ -1,0 +1,145 @@
+body {
+	background-color: #efefef;
+	font-family: 'Lato', sans-serif;
+	font-size: 18px;
+	color: #333;
+	margin: 0px;
+}
+
+header {
+	text-align: center;
+	padding: 10px 0;
+}
+
+.main {
+	text-align: center;
+	background: #fff;
+	width: 60%;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+
+.container {
+	max-width: 60% !important;
+	background-color: #333D51;
+}
+
+.navbar-theme {
+	background-color: #333D51;
+	color: #fff;
+}
+
+.navbar-dropdown {
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+    align-items: flex-start;
+}
+
+@media screen and (min-width: 992px) {
+	.navbar-dropdown {
+		flex-direction: row;
+		justify-content: space-between;
+	}
+}
+
+.navbar-toggler:focus {
+	box-shadow: none;
+}
+
+.navbar-toggler-icon {
+	color: #fff;
+}
+
+.nav-link-theme {
+	color: #fff;
+}
+
+.nav-link-theme:focus, .nav-link-theme:hover {
+	color: #fff;
+	background-color: #889caa;
+}
+
+.dropdown-menu-theme {
+	background-color: #889caa;
+	border-radius: 0;
+	padding: 0;
+}
+
+.dropdown-item-theme {
+	color: #fff;
+	border-bottom: 1px solid #4a5257;
+	padding: 8px;
+}
+
+.dropdown-menu-theme li:last-child>a {
+	border: 0;
+}
+
+.dropdown-item-theme:hover {
+	color: #fff;
+	background-color: #587183;
+}
+
+main {
+	margin-top: 30px;
+	margin-bottom: 30px;
+	padding-top: 40px;
+	padding-bottom: 40px;
+}
+
+.table {
+	margin-left: auto;
+	margin-right: auto;
+	width: 80%;
+	margin-bottom: 80px;
+	border: none;
+	border-collapse: collapse;
+	-webkit-border-horizontal-spacing: 0px;
+	-webkit-border-vertical-spacing: 0px;
+	text-align: left;
+}
+
+.table td, .table th, .table tr {
+	border: none;
+}
+
+.table tr:last-of-type {
+	font-weight: bold;
+	border-bottom: 3px solid #333D51;
+}
+
+.table td {
+	padding: 7px;
+}
+
+.table tr td:last-child {
+	text-align: right;
+}
+
+.table tr:first-of-type td {
+	font-weight: bold;
+	font-size: 25px;
+	text-align: left !important;
+	border-bottom: 1px solid #254050;
+}
+
+footer {
+	background-color: #333D51;
+	color: #fff;
+	font-size: 12px;
+	text-align: center;
+	padding: 10px;
+}
+
+#form-container {
+	width: 500px;
+	background-color: #333D51;
+	}
+
+#logo {
+	color: #fff;
+	text-align: center;
+	padding: 15px;
+	}
