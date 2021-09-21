@@ -31,7 +31,7 @@
 
                 {% if nick_error %}
                 <div class="alert alert-danger" role="alert">
-                    Incorrect nick!
+                    Incorrect nick! Nick must be at least 5 characters long.
                 </div>
                 {% endif %}
 
@@ -42,7 +42,7 @@
 
                 {% if password_error %}
                 <div class="alert alert-danger" role="alert">
-                    Incorrect password!
+                    Incorrect password! Password must be between 5 and 20 characters long. Special characters are not allowed.
                 </div>
                 {% endif %}
 
