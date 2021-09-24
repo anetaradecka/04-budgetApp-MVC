@@ -17,11 +17,13 @@ class SignUp extends \Core\Controller
 
     public function __construct() {
         // $_SESSION['registration_success'] = true;
-        
-        $this->userExists = User::exists($this->getNick());
+        $nick = $this->getNick();
+        $password1 = $this->getPassword1();
 
-        if (!$this->userExists) {
-            $this->userCreated = User::signUp($this->getNick(), $this->getPassword1());
+        $this->userExists = User::exists($nick);
+
+        if (!$this->userExists && $nick !== null && $password1 !== null) {
+            $this->userCreated = User::signUp($nick, $password1);
         }
     }
 
@@ -30,14 +32,22 @@ class SignUp extends \Core\Controller
      *
      * @return void
      */
-    public function indexAction()
+    public function newAction()
     {
-        View::renderTemplate('SignUp/index.html', [
-            'user_created' => $this->userCreated,
-            'user_exists' => $this->userExists,
-            'nick_error' => $this->validateNick($this->getNick()),
-            'password_error' => $this->validatePassword($this->getPassword1(), $this->getPassword2())
-        ]);
+        View::renderTemplate('SignUp/new.html');
+    }
+
+    public function createAction()
+    {
+        $user = new User($_POST);
+
+        if ($user->signUp()) {
+            View::renderTemplate('SignUp/success.html');
+        } else {
+            View::renderTemplate('SignUp/new.html', [
+                'user' => $user
+            ]);
+        }
     }
 
     protected function validateNick($nick)
