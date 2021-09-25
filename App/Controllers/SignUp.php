@@ -42,12 +42,18 @@ class SignUp extends \Core\Controller
         $user = new User($_POST);
 
         if ($user->signUp()) {
-            View::renderTemplate('SignUp/success.html');
+            header('Location: http://' . $_SERVER['HTTP_HOST'] . '/SignUp/success', true, 303);
+            exit;
         } else {
             View::renderTemplate('SignUp/new.html', [
                 'user' => $user
             ]);
         }
+    }
+
+    public function successAction()
+    {
+        View::renderTemplate('SignUp/success.html');
     }
 
     protected function validateNick($nick)
