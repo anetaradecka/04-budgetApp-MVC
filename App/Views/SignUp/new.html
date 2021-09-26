@@ -2,6 +2,48 @@
 
 <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 
+{% block head %}
+<script>
+    $.validator.addMethod('validPassword', function(value, element, parameter) {
+        if (value !== '') {
+            if (value.match(/.*[a-z]+.*/i) === null) {
+                return false;
+            }
+
+            if (value.match(/.*\d+.*/) === null) {
+                return false;
+            }
+            return true;
+        }
+    }, 'Must contain at least one letter and aone number.');
+
+    $(function() {
+        $('#signUpForm').validate({
+            rules: {
+                username: {
+                    required: true,
+                    remote: '/account/validateUsername'
+                },
+                password1: {
+                    required: true,
+                    minlength: 6,
+                    maxlength: 12,
+                    validPassword: true
+                },
+                password2: {
+                    equalTo: '#password1'
+                }
+            },
+            messages: {
+                username: {
+                    remote: 'Username is already taken.'
+                }
+            }
+        });
+    });
+</script>
+{% endblock %}
+
 <main class="d-flex justify-content-center align-items-center vh-100 vw-100">
     <div id="container">
         <header id="logo">
@@ -21,7 +63,7 @@
             </div>
             {% endif%}
 
-            <form method="post" action="/SignUp/create">
+            <form method="post" action="/SignUp/create" id="signUpForm">
                 <div class="input-group mb-5 input-group-lg ps-3 pe-3">
                     <span class="input-group-text"><i class="fas fa-user fa-lg"></i></span>
                     <input type="text" class="form-control" name="username" placeholder="Username" value="{{ user.username }}" required autofocus>
@@ -29,18 +71,39 @@
 
                 <div class="input-group mb-3 input-group-lg ps-3 pe-3">
                     <span class="input-group-text"><i class="fas fa-unlock-alt fa-lg"></i></span>
-                    <input type="password" class="form-control" name="password1" placeholder="Password" required pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$">
+                    <input type="password" class="form-control" id="password1" name="password1" placeholder="Password" required>
                 </div>
 
                 <div class="input-group mb-5 input-group-lg ps-3 pe-3">
                     <span class="input-group-text"><i class="fas fa-unlock-alt fa-lg"></i></span>
-                    <input type="password" class="form-control" name="password2" placeholder="Repeat password">
+                    <input type="password" class="form-control" id="password2" name="password2" placeholder="Repeat password">
                 </div>
+
+                <p class="d-flex justify-content-end">
+                    <button class="btn btn-link" id="show-password" type="button">Show password</button>
+                </p>
 
                 <script>
                     function cb() {
                         document.querySelector('button[type="submit"]').removeAttribute('disabled');
                     }
+
+                    document.querySelector('#show-password').addEventListener('click', (event) => {
+                        const button = event.target;
+                        const password1 = document.querySelector('#password1');
+                        const password2 = document.querySelector('#password2');
+
+                        if (button.innerText === 'Show password') {
+                            password1.setAttribute('type', 'text');
+                            password2.setAttribute('type', 'text');
+                            button.innerText = 'Hide password';
+                        } else {
+                            password1.setAttribute('type', 'password');
+                            password2.setAttribute('type', 'password');
+                            button.innerText = 'Show password';
+                        }
+
+                    })
                 </script>
 
                 <div class="g-recaptcha mb-5 d-flex justify-content-center" data-callback="cb" data-sitekey="6LeF4DgcAAAAAFtvA3G4VPNhDlPUxH3Ix37Je-uR"></div>

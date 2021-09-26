@@ -23,11 +23,11 @@ class User extends \Core\Model
     public function validate()
     {
         if ($this->username == '') $this->errors[] = 'Username is required.';
-        if ($this->exists($this->username)) $this->errors[] = 'Username is already taken.';
+        if (static::usernameExists($this->username)) $this->errors[] = 'Username is already taken.';
         if ($this->password1 == '') $this->errors[] = 'Password is required.';
         if ($this->password1 !== $this->password2) $this->errors[] = 'Password must match confirmation.';
-        if (strlen($this->password1) < 8) $this->errors[] = 'Password must be at least 8 characters long.';
-        if (strlen($this->password1) > 14) $this->errors[] = 'Password must be at most 14 characters long.';
+        if (strlen($this->password1) < 6) $this->errors[] = 'Password must be at least 6 characters long.';
+        if (strlen($this->password1) > 12) $this->errors[] = 'Password must be at most 12 characters long.';
         if (preg_match('/.*[a-z]+.*/i', $this->password1) == 0) $this->errors[] = 'Password must contain at least one letter.';
         if (preg_match('/.*\d+.*/i', $this->password1) == 0) $this->errors[] = 'Password must contain at least one number.';
     }
@@ -40,7 +40,7 @@ class User extends \Core\Model
         return $statement->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public static function exists($username)
+    public static function usernameExists($username)
     {
         $db = static::getDB();
         $sql = 'SELECT id FROM users WHERE username = :username';
