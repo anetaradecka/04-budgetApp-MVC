@@ -13,7 +13,7 @@ class User extends \Core\Model
 {
     public $errors = [];
 
-    public function __construct($data)
+    public function __construct($data = [])
     {
         foreach ($data as $key => $value) {
             $this->$key = $value;
@@ -42,13 +42,30 @@ class User extends \Core\Model
 
     public static function usernameExists($username)
     {
+        return static::findByUsername($username) !== false;
+    }
+
+    public static function findByUsername($username) {
         $db = static::getDB();
-        $sql = 'SELECT id FROM users WHERE username = :username';
+        $sql = 'SELECT * FROM users WHERE username = :username';
         $statement = $db->prepare($sql);
         $statement->bindParam(':username', $username, PDO::PARAM_STR);
+        $statement->setFetchMode(PDO::FETCH_CLASS, get_called_class());
         $statement->execute();
 
-        return $statement->fetch() !== false;
+        return $statement->fetch();
+    }
+
+    public static function authenticate($username, $password) {
+        $user = static::findByUsername($username);
+
+        if ($user) {
+            if (password_verify($password, $user->password)) {
+                return $user;
+            }
+        }
+
+        return false;
     }
 
     public function signUp()

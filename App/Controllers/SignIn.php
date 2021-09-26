@@ -16,4 +16,17 @@ class SignIn extends \Core\Controller
     {
         View::renderTemplate('SignIn/new.html');
     }
+
+    public function createAction()
+    {
+        $user = User::authenticate($_POST['username'], $_POST['password']);
+
+        if ($user) {
+            $this->redirect('/');
+        } else {
+            View::renderTemplate('SignIn/new.html', [
+                'username' => $_POST['username']
+            ]);
+        }
+    }
 }
