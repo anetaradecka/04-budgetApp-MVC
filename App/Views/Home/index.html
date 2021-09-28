@@ -2,11 +2,10 @@
 <main>
     <h1>Welcome</h1>
 
-    <p>
-        <a href="/SignUp/new">Sign up</a>
-    </p>
-    <p>
-        <a href="/SignIn/new">Sign in</a>
-    </p>
+    {% if is_logged_in %}
+    <p><a href="/SignOut">Sign out</a></p>
+    {% else %}
+    <p><a href="/SignUp/new">Sign up</a> or <a href="/SignIn">sign in</a>.</p>
+    {% endif %}
 </main>
 {% endblock %}

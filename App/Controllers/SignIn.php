@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use \Core\View;
 use \App\Models\User;
+use \App\Auth;
 
 /**
  * Home controller
@@ -22,11 +23,18 @@ class SignIn extends \Core\Controller
         $user = User::authenticate($_POST['username'], $_POST['password']);
 
         if ($user) {
-            $this->redirect('/');
+            Auth::signIn($user);
+            $this->redirect(Auth::getReturnToPage());
         } else {
             View::renderTemplate('SignIn/new.html', [
                 'username' => $_POST['username']
             ]);
         }
+    }
+
+    public function destroyAction()
+    {
+        Auth::signOut();
+        $this->redirect('/');
     }
 }
