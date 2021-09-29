@@ -90,9 +90,9 @@ abstract class Controller
      * Require the user to be logged in before giving access to the requested page.
      * Remember the requested page for later, then redirect to the login page.
      */
-    public function requireLogin()
+    public function requireSignIn()
     {
-        if (!Auth::isSignedIn()) {
+        if (!Auth::getUser()) {
             Auth::rememberRequestedPage();
             $this->redirect('/SignIn');
         }

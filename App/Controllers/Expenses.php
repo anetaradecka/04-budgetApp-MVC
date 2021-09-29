@@ -3,13 +3,11 @@
 namespace App\Controllers;
 
 use \Core\View;
-use \App\Auth;
 
-class Expenses extends \Core\Controller
+class Expenses extends Authenticated
 {
     public function indexAction()
     {
-        $this->requireLogin();
         View::renderTemplate('Expenses/index.html');
     }
 }

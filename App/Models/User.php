@@ -109,4 +109,15 @@ class User extends \Core\Model
     {
         return isset($_POST['password']) ? $_POST['password'] : null;
     }
+
+    public static function findById($id) {
+        $db = static::getDB();
+        $sql = 'SELECT * FROM users WHERE id = :id';
+        $statement = $db->prepare($sql);
+        $statement->bindParam(':id', $id, PDO::PARAM_INT);
+        $statement->setFetchMode(PDO::FETCH_CLASS, get_called_class());
+        $statement->execute();
+
+        return $statement->fetch();
+    }
 }
