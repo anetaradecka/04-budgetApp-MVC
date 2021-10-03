@@ -1,0 +1,16 @@
+{% extends 'base.html' %}{% block title %}Forgot password{% endblock %} {% block body %}
+<h1>Request password reset</h1>
+
+<div id="content">
+    <form method="post">
+        <div class="input-group mb-3">
+            <label for="username">Username</label>
+            <input type="text" id="username" name="username" autofocus required>
+        </div>
+
+        <div class="mb-5">
+            <button class="btn btn-warning btn-lg" type="submit">Reset password</button>
+        </div>
+    </form>
+</div>
+{% endblock %}
