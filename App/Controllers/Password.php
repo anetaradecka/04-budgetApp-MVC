@@ -13,6 +13,6 @@ class Password extends \Core\Controller
 
     public function resetAction()
     {
-        View::renderTemplate('Password/forgot.html');
+        View::renderTemplate('Password/reset.html');
     }
 }
