@@ -45,6 +45,17 @@ class User extends \Core\Model
         return static::findByUsername($username) !== false;
     }
 
+    public static function findById($id) {
+        $db = static::getDB();
+        $sql = 'SELECT * FROM users WHERE id = :id';
+        $statement = $db->prepare($sql);
+        $statement->bindParam(':id', $id, PDO::PARAM_INT);
+        $statement->setFetchMode(PDO::FETCH_CLASS, get_called_class());
+        $statement->execute();
+
+        return $statement->fetch();
+    }
+
     public static function findByUsername($username) {
         $db = static::getDB();
         $sql = 'SELECT * FROM users WHERE username = :username';
@@ -85,39 +96,34 @@ class User extends \Core\Model
         return false;
     }
 
-    public static function signIn($login, $password)
+    public static function signIn($username, $password)
     {
         $db = static::getDB();
         $sql = 'SELECT * FROM users WHERE username = :username';
         $statement = $db->prepare($sql);
-        $statement->execute([':username' => $login]);
+        $statement->execute([':username' => $username]);
 
         if ($statement->rowCount() > 0) {
             $result = $statement->fetch(PDO::FETCH_ASSOC);
             return password_verify($password, $result['password']);
-        } else {
-            return false;
         }
+
+        return false;
     }
 
-    public static function getLogin()
+    public static function resetPassword($username, $password)
     {
-        return isset($_POST['login']) ? $_POST['login'] : null;
-    }
+        $user = static::findByUsername($username);
 
-    public static function getPassword()
-    {
-        return isset($_POST['password']) ? $_POST['password'] : null;
-    }
+        if ($user) {
+            $db = static::getDB();
+            $sql = 'UPDATE users SET password = :password WHERE username = :username';
+            $password_hash = password_hash($password, PASSWORD_DEFAULT);
+            $statement = $db->prepare($sql);
+            $statement->execute([':username' => $username, ':password' => $password_hash]);
+            return $statement->fetch(PDO::FETCH_ASSOC);
+        }
 
-    public static function findById($id) {
-        $db = static::getDB();
-        $sql = 'SELECT * FROM users WHERE id = :id';
-        $statement = $db->prepare($sql);
-        $statement->bindParam(':id', $id, PDO::PARAM_INT);
-        $statement->setFetchMode(PDO::FETCH_CLASS, get_called_class());
-        $statement->execute();
-
-        return $statement->fetch();
+        return false;
     }
 }
