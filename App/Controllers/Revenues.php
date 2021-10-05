@@ -4,15 +4,15 @@ namespace App\Controllers;
 
 use \Core\View;
 
-class Expenses extends Authenticated
+class Revenues extends Authenticated
 {
     public function indexAction()
     {
-        View::renderTemplate('Expenses/index.html');
+        View::renderTemplate('Revenues/index.html');
     }
 
     public function addAction()
     {
-        View::renderTemplate('Expenses/add.html');
+        View::renderTemplate('Revenues/add.html');
     }
 }
