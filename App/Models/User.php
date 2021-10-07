@@ -32,14 +32,6 @@ class User extends \Core\Model
         if (preg_match('/.*\d+.*/i', $this->password1) == 0) $this->errors[] = 'Password must contain at least one number.';
     }
 
-    public static function getAll()
-    {
-        $db = static::getDB();
-        $statement = $db->query('SELECT id, name FROM users');
-
-        return $statement->fetchAll(PDO::FETCH_ASSOC);
-    }
-
     public static function usernameExists($username)
     {
         return static::findByUsername($username) !== false;
@@ -113,17 +105,11 @@ class User extends \Core\Model
 
     public static function resetPassword($username, $password)
     {
-        $user = static::findByUsername($username);
-
-        if ($user) {
-            $db = static::getDB();
-            $sql = 'UPDATE users SET password = :password WHERE username = :username';
-            $password_hash = password_hash($password, PASSWORD_DEFAULT);
-            $statement = $db->prepare($sql);
-            $statement->execute([':username' => $username, ':password' => $password_hash]);
-            return $statement->fetch(PDO::FETCH_ASSOC);
-        }
-
-        return false;
+        $db = static::getDB();
+        $sql = 'UPDATE users SET password = :password WHERE username = :username';
+        $password_hash = password_hash($password, PASSWORD_DEFAULT);
+        $statement = $db->prepare($sql);
+        $statement->execute([':username' => $username, ':password' => $password_hash]);
+        return $statement->fetch(PDO::FETCH_ASSOC);
     }
 }
