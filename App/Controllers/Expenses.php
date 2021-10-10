@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use \Core\View;
+use \App\Models\Budget;
 
 class Expenses extends Authenticated
 {
