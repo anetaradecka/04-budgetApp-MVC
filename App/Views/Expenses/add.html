@@ -1,4 +1,21 @@
 {% extends 'base.html' %} {% block title %}Expenses{% endblock %} {% block body %}
-<h1>Expenses</h1>
-<p>Lorem ipsum...</p>
+<div id="container">
+    <header id="logo">
+        <h2>Open an account to </br> get started</h2>
+        <hr>
+    </header>
+
+    <div id="content">
+        {% if user.errors is not empty %}
+        <div class="alert alert-danger" role="alert">
+            <p><strong>Errors</strong></p>
+            <ul>
+                {% for error in user.errors %}
+                <li>{{ error }}</li>
+                {% endfor%}
+            </ul>
+        </div>
+        {% endif%}
+    </div>
+</div>
 {% endblock %}

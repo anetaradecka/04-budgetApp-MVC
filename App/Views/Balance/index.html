@@ -1,0 +1,186 @@
+{% extends 'base.html' %} {% block title %}Expenses{% endblock %} {% block body %}
+<div class="container">
+    <header>
+        <h2>Balance</h2>
+    </header>
+
+    <!-- <?php
+    // time setup
+    $now = new DateTime();
+    $this_day_of_month = (new DateTime())->setDate($now->format("Y"), $now->format("m"), $now->format("d"));
+    $first_day_of_month = (new DateTime())->setDate($now->format("Y"), $now->format("m"), 1);
+
+    $_POST['start_date'] = isset($_POST['start_date']) ? $_POST['start_date'] : $first_day_of_month->format("Y-m-d");
+    $_POST['end_date'] = isset($_POST['end_date']) ? $_POST['end_date'] : $this_day_of_month->format("Y-m-d");
+
+    // database access
+    require_once "connect.php";
+
+    $connection = new mysqli($host, $db_user, $db_password, $db_name);
+
+    if ($connection->connect_error) {
+        die("Connection failed: " . $connection->connect_error);
+    }
+
+    $incomes = $connection->query(
+        '
+        SELECT income_category_assigned_to_user, amount, date_of_income AS date, income_comment AS comment, name
+        FROM `incomes`
+        LEFT JOIN `income_category_default`
+        ON incomes.income_category_assigned_to_user = income_category_default.id
+        WHERE user_id = ' . $_SESSION['id'] . ' AND date_of_income BETWEEN \'' . $_POST['start_date'] . '\' AND \'' . $_POST['end_date'] . '\';'
+    );
+
+    $incomes_total = $connection->query(
+        '
+        SELECT SUM(amount) as total
+        FROM `incomes`
+        WHERE user_id = ' . $_SESSION['id'] . ' AND date_of_income BETWEEN \'' . $_POST['start_date'] . '\' AND \'' . $_POST['end_date'] . '\';'
+    );
+
+    $incomes_total_value = $incomes_total->fetch_assoc()["total"];
+
+    $expenses = $connection->query(
+        '
+        SELECT expense_category_assigned_to_user, amount, date_of_expense AS date, expense_comment AS comment, category AS name
+        FROM `expenses`
+        LEFT JOIN `expense_category_default`
+        ON expenses.expense_category_assigned_to_user = expense_category_default.id
+        WHERE user_id = ' . $_SESSION['id'] . ' AND date_of_expense BETWEEN \'' . $_POST['start_date'] . '\' AND \'' . $_POST['end_date'] . '\';'
+    );
+
+    $expenses_total = $connection->query(
+        '
+        SELECT SUM(amount) as total
+        FROM `expenses`
+        WHERE user_id = ' . $_SESSION['id'] . ' AND date_of_expense BETWEEN \'' . $_POST['start_date'] . '\' AND \'' . $_POST['end_date'] . '\';'
+    );
+
+    $expenses_total_value = $expenses_total->fetch_assoc()["total"];
+    ?> -->
+
+    <main>
+        <form method="post">
+            <div class="row">
+                <label for="period">Period</label>
+                <select class="form-control" name="period" id="period">
+                    <option value="current_month">Current month</option>
+                    <option value="previous_month">Previous month</option>
+                    <option value="current_year">Current year</option>
+                </select>
+                <script>
+                    const periodSelect = document.querySelector('#period');
+
+                    periodSelect.addEventListener('change', (event) => {
+                        const value = event.target.value;
+                        const startDateInput = document.querySelector('#start-date');
+                        const endDateInput = document.querySelector('#end-date');
+
+                        if (value == 'current_month') {
+                            const firstDayOfCurrentMonth = new Date();
+                            const now = new Date();
+
+                            firstDayOfCurrentMonth.setDate(1);
+
+                            startDateInput.value = firstDayOfCurrentMonth.toISOString().slice(0, 10);
+                            endDateInput.value = now.toISOString().slice(0, 10);
+
+                        } else if (value == 'previous_month') {
+                            const firstDayOfPreviousMonth = new Date();
+                            const lastDayOfPreviousMonth = new Date();
+
+                            firstDayOfPreviousMonth.setDate(1);
+                            firstDayOfPreviousMonth.setMonth(firstDayOfPreviousMonth.getMonth() - 1);
+
+                            lastDayOfPreviousMonth.setDate(1);
+                            lastDayOfPreviousMonth.setDate(lastDayOfPreviousMonth.getDate() - 1);
+
+                            startDateInput.value = firstDayOfPreviousMonth.toISOString().slice(0, 10);
+                            endDateInput.value = lastDayOfPreviousMonth.toISOString().slice(0, 10);
+                        } else if (value == 'current_year') {
+                            const firstDayOfJanuary = new Date();
+                            const now = new Date();
+
+                            firstDayOfJanuary.setDate(1);
+                            firstDayOfJanuary.setMonth(0);
+
+                            startDateInput.value = firstDayOfJanuary.toISOString().slice(0, 10);
+                            endDateInput.value = now.toISOString().slice(0, 10);
+                        }
+                    });
+                </script>
+            </div>
+
+            <div class="row d-flex justify-content-between" style="width: 80%; margin: 20px auto;">
+                <div class="col col-sm-6 col-md-4">1
+                    <label for="start-date">Start date</label>
+                    <input type="date" class="form-control myDate" id="start-date" name="start_date" value="<?php echo $_POST['start_date'] ?>" />
+                </div>
+
+                <div class="col col-sm-6 col-md-4">
+                    <label for="end-date">End date</label>
+                    <input type="date" class="form-control myDate" id="end-date" name="end_date" value="<?php echo $_POST['end_date'] ?>" />
+                </div>
+
+                <div class="col col-md-4 d-flex align-items-end justify-content-end px-2">
+                    <button type="submit" class="btn btn-warning w-100">Display balance</button>
+                </div>
+            </div>
+        </form>
+
+        <table class="table">
+            <tr>
+                <td colspan="4">Revenues</td>
+            </tr>
+            {% for row in revenues %}
+            <tr>
+                <td>{{ row.name }}</td>
+                <td>{{ row.date }}</td>
+                <td>{{ row.comment }}</td>
+                <td>{{ row.amount }}</td>
+            </tr>
+            {% endfor %}
+            <tr>
+                <td>Total</td>
+                <td colspan="3">{{total_revenues}}</td>
+            </tr>
+        </table>
+
+        <table class="table">
+            <tr>
+                <td colspan="4">Expenses</td>
+            </tr>
+            {% for row in expenses %}
+            <tr>
+                <td>{{ row.name }}</td>
+                <td>{{ row.date }}</td>
+                <td>{{ row.comment }}</td>
+                <td>{{ row.amount }}</td>
+            </tr>
+            {% endfor %}
+            <tr>
+                <td>Total</td>
+                <td colspan="3">{{total_expenses}}</td>
+            </tr>
+        </table>
+
+        <table class="table">
+            <tr>
+                <td colspan="2">Balance</td>
+            </tr>
+            <tr>
+                <td>Revenues</td>
+                <td>{{total_revenues}}</td>
+            </tr>
+            <tr>
+                <td>Expenses</td>
+                <td>{{total_expenses}}</td>
+            </tr>
+            <tr>
+                <td>Total</td>
+                <td>{{total_revenues - total_expenses}} PLN</td>
+            </tr>
+        </table>
+</div>
+</div>
+{% endblock %}

@@ -12,6 +12,66 @@ use \App\Auth;
  */
 class Budget extends \Core\Model
 {
+    public static function getRevenues() {
+        $user = Auth::getUser();
+
+        if ($user) {
+            $db = static::getDB();
+            $sql = 'SELECT * FROM revenues WHERE user_id = :user_id';
+            $statement = $db->prepare($sql);
+            $statement->bindParam(':user_id', $user->id, PDO::PARAM_INT);
+            $statement->execute();
+            return $statement->fetchAll();
+        }
+    
+        return false;
+    }
+
+    public static function getTotalRevenues() {
+        $user = Auth::getUser();
+
+        if ($user) {
+            $db = static::getDB();
+            $sql = 'SELECT SUM(amount) as total FROM revenues WHERE user_id = :user_id';
+            $statement = $db->prepare($sql);
+            $statement->bindParam(':user_id', $user->id, PDO::PARAM_INT);
+            $statement->execute();
+            return $statement->fetch(PDO::FETCH_ASSOC)['total'];
+        }
+    
+        return 0;
+    }
+
+    public static function getExpenses() {
+        $user = Auth::getUser();
+
+        if ($user) {
+            $db = static::getDB();
+            $sql = 'SELECT * FROM expenses WHERE user_id = :user_id';
+            $statement = $db->prepare($sql);
+            $statement->bindParam(':user_id', $user->id, PDO::PARAM_INT);
+            $statement->execute();
+            return $statement->fetchAll(PDO::FETCH_ASSOC);
+        }
+    
+        return false;
+    }
+
+    public static function getTotalExpenses() {
+        $user = Auth::getUser();
+
+        if ($user) {
+            $db = static::getDB();
+            $sql = 'SELECT SUM(amount) as total FROM expenses WHERE user_id = :user_id';
+            $statement = $db->prepare($sql);
+            $statement->bindParam(':user_id', $user->id, PDO::PARAM_INT);
+            $statement->execute();
+            return $statement->fetch(PDO::FETCH_ASSOC)['total'];
+        }
+    
+        return 0;
+    }
+
     public static function getExpenseCategories() {
         $user = Auth::getUser();
 
@@ -21,7 +81,7 @@ class Budget extends \Core\Model
             $statement = $db->prepare($sql);
             // $statement->bindParam(':id', $user->id, PDO::PARAM_INT);
             $statement->execute();
-            return $statement->fetch(); // RETURN TYPE?
+            return $statement->fetch(PDO::FETCH_ASSOC);
         }
     
         return false;
@@ -32,11 +92,11 @@ class Budget extends \Core\Model
 
         if ($user) {
             $db = static::getDB();
-            $sql = 'SELECT * FROM income_category_default'; // WHERE id = :id
+            $sql = 'SELECT * FROM revenue_category_default'; // WHERE id = :id
             $statement = $db->prepare($sql);
             // $statement->bindParam(':id', $user->id, PDO::PARAM_INT);
             $statement->execute();
-            return $statement->fetch(); // RETURN TYPE?
+            return $statement->fetch(PDO::FETCH_ASSOC);
         }
     
         return false;
@@ -51,7 +111,7 @@ class Budget extends \Core\Model
             $statement = $db->prepare($sql);
             // $statement->bindParam(':id', $user->id, PDO::PARAM_INT);
             $statement->execute();
-            return $statement->fetch(); // RETURN TYPE?
+            return $statement->fetch(PDO::FETCH_ASSOC);
         }
     
         return false;
