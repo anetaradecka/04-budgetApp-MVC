@@ -10,6 +10,8 @@ class Balance extends Authenticated
     public function indexAction()
     {
         View::renderTemplate('Balance/index.html', [
+            'start_date' => Budget::getStartDate(),
+            'end_date' => Budget::getEndDate(),
             'revenues' => Budget::getRevenues(),
             'total_revenues' => Budget::getTotalRevenues(),
             'expenses' => Budget::getExpenses(),

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use PDO;
+use DateTime;
 use \App\Auth;
 
 /**
@@ -12,14 +13,30 @@ use \App\Auth;
  */
 class Budget extends \Core\Model
 {
+    public static function getStartDate() {
+        $now = new DateTime();
+        $start_date = (new DateTime())->setDate($now->format("Y"), $now->format("m"), 1);
+        return isset($_POST['start_date']) ? $_POST['start_date'] : $start_date->format("Y-m-d");
+    }
+
+    public static function getEndDate() {
+        $now = new DateTime();
+        $end_date = (new DateTime())->setDate($now->format("Y"), $now->format("m"), $now->format("d"));
+        return isset($_POST['end_date']) ? $_POST['end_date'] : $end_date->format("Y-m-d");
+    }
+
     public static function getRevenues() {
         $user = Auth::getUser();
 
         if ($user) {
             $db = static::getDB();
-            $sql = 'SELECT * FROM revenues WHERE user_id = :user_id';
+            $sql = 'SELECT revenue_category_assigned_to_user, amount, revenue_date AS date, comment, name
+                    FROM revenues LEFT JOIN revenue_category_default ON revenues.revenue_category_assigned_to_user = revenue_category_default.id
+                    WHERE user_id = :user_id AND revenue_date BETWEEN :start_date AND :end_date';
             $statement = $db->prepare($sql);
             $statement->bindParam(':user_id', $user->id, PDO::PARAM_INT);
+            $statement->bindParam(':start_date', $_POST['start_date'], PDO::PARAM_STR);
+            $statement->bindParam(':end_date', $_POST['end_date'], PDO::PARAM_STR);
             $statement->execute();
             return $statement->fetchAll();
         }
@@ -32,9 +49,11 @@ class Budget extends \Core\Model
 
         if ($user) {
             $db = static::getDB();
-            $sql = 'SELECT SUM(amount) as total FROM revenues WHERE user_id = :user_id';
+            $sql = 'SELECT SUM(amount) as total FROM revenues WHERE user_id = :user_id AND revenue_date BETWEEN :start_date AND :end_date';
             $statement = $db->prepare($sql);
             $statement->bindParam(':user_id', $user->id, PDO::PARAM_INT);
+            $statement->bindParam(':start_date', $_POST['start_date'], PDO::PARAM_STR);
+            $statement->bindParam(':end_date', $_POST['end_date'], PDO::PARAM_STR);
             $statement->execute();
             return $statement->fetch(PDO::FETCH_ASSOC)['total'];
         }
@@ -47,9 +66,13 @@ class Budget extends \Core\Model
 
         if ($user) {
             $db = static::getDB();
-            $sql = 'SELECT * FROM expenses WHERE user_id = :user_id';
+            $sql = 'SELECT expense_category_assigned_to_user, amount, expense_date AS date, comment, category AS name
+                    FROM expenses LEFT JOIN expense_category_default ON expenses.expense_category_assigned_to_user = expense_category_default.id
+                    WHERE user_id = :user_id AND expense_date BETWEEN :start_date AND :end_date';
             $statement = $db->prepare($sql);
             $statement->bindParam(':user_id', $user->id, PDO::PARAM_INT);
+            $statement->bindParam(':start_date', $_POST['start_date'], PDO::PARAM_STR);
+            $statement->bindParam(':end_date', $_POST['end_date'], PDO::PARAM_STR);
             $statement->execute();
             return $statement->fetchAll(PDO::FETCH_ASSOC);
         }
@@ -62,9 +85,11 @@ class Budget extends \Core\Model
 
         if ($user) {
             $db = static::getDB();
-            $sql = 'SELECT SUM(amount) as total FROM expenses WHERE user_id = :user_id';
+            $sql = 'SELECT SUM(amount) as total FROM expenses WHERE user_id = :user_id AND expense_date BETWEEN :start_date AND :end_date';
             $statement = $db->prepare($sql);
             $statement->bindParam(':user_id', $user->id, PDO::PARAM_INT);
+            $statement->bindParam(':start_date', $_POST['start_date'], PDO::PARAM_STR);
+            $statement->bindParam(':end_date', $_POST['end_date'], PDO::PARAM_STR);
             $statement->execute();
             return $statement->fetch(PDO::FETCH_ASSOC)['total'];
         }
