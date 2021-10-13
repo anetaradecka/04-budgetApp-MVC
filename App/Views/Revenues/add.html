@@ -1,4 +1,57 @@
-{% extends 'base.html' %} {% block title %}Expenses{% endblock %} {% block body %}
-<h1>Revenues</h1>
-<p>Lorem ipsum...</p>
+{% extends 'base.html' %} {% block title %}Revenues{% endblock %} {% block body %}
+<header>
+    <h2>Revenues</h2>
+</header>
+
+<div class="container-fluid p-3" id="content">
+    <form action="/Revenues/added" method="post">
+        <div>
+            <div class="row mt-3">
+                <div class="col col-xs-6">
+                    <div class="input-group mb-3">
+                        <span class="input-group-text">PLN</span>
+                        <input type="text" name="amount" class="form-control" aria-label="Dollar amount (with dot and two decimal places)">
+                    </div>
+                </div>
+                <div class="col col-xs-6">
+                    <input type="date" class="form-control myDate" id="revenue-date" name="date" value="2021-08-05" />
+                </div>
+                <script>
+                    const now = new Date();
+                    document.querySelector('#revenue-date').value = `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`;
+                </script>
+            </div>
+
+            <div class="row">
+                <div class="col col-xs-12">
+                    <div class="input-group mb-3">
+                        <select class="form-select" name="category" aria-label="Default select example">
+                            <option disabled>Select revenue category</option>
+                            {% for category in revenue_categories %}
+                            <option value="{{category.id}}">{{category.name}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col col-xs-12">
+                    <div class="input-group mb-3">
+                        <textarea class="form-control" name="comment" rows="6" placeholder="Leave a comment here" id="floatingTextarea"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col col-12">
+                <div class="d-flex justify-content-center gap-2 mb-5">
+                    <button type="submit" class="btn btn-warning">Add revenue</button>
+                    <button type="reset" class="btn btn-outline-dark">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
 {% endblock %}

@@ -1,21 +1,70 @@
 {% extends 'base.html' %} {% block title %}Expenses{% endblock %} {% block body %}
-<div id="container">
-    <header id="logo">
-        <h2>Open an account to </br> get started</h2>
-        <hr>
-    </header>
+<header>
+    <h2>Expenses</h2>
+</header>
 
-    <div id="content">
-        {% if user.errors is not empty %}
-        <div class="alert alert-danger" role="alert">
-            <p><strong>Errors</strong></p>
-            <ul>
-                {% for error in user.errors %}
-                <li>{{ error }}</li>
-                {% endfor%}
-            </ul>
+<div class="container-fluid p-3" id="content">
+    <form action="/Expenses/added" method="post">
+        <div>
+            <div class="row mt-3">
+                <div class="col col-xs-6">
+                    <div class="input-group mb-3">
+                        <span class="input-group-text">PLN</span>
+                        <input type="text" name="amount" class="form-control" aria-label="Dollar amount (with dot and two decimal places)">
+                    </div>
+                </div>
+                <div class="col col-xs-6">
+                    <input type="date" class="form-control myDate" id="expense-date" name="date" value="2021-08-05" />
+                </div>
+                <script>
+                    const now = new Date();
+                    document.querySelector('#expense-date').value = `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`;
+                </script>
+            </div>
+
+            <div class="row">
+                <div class="col col-xs-12">
+                    <div class="input-group mb-3">
+                        <select class="form-select" name="category" aria-label="Default select example">
+                            <option disabled>Select expense category</option>
+                            {% for category in expense_categories %}
+                            <option value="{{category.id}}">{{category.name}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col col-xs-12">
+                    <div class="input-group mb-3">
+                        <select class="form-select" name="method" aria-label="Default select example">
+                            <option disabled>Select payment method</option>
+                            {% for method in payment_methods %}
+                            <option value="{{method.id}}">{{method.name}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col col-xs-12">
+                    <div class="input-group mb-3">
+                        <textarea class="form-control" name="comment" rows="6" placeholder="Leave a comment here" id="floatingTextarea"></textarea>
+                    </div>
+                </div>
+            </div>
         </div>
-        {% endif%}
-    </div>
+
+        <div class="row">
+            <div class="col col-12">
+                <div class="d-flex justify-content-center gap-2 mb-5">
+                    <button type="submit" class="btn btn-warning">Add expense</button>
+                    <button type="reset" class="btn btn-light">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </form>
 </div>
 {% endblock %}

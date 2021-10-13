@@ -38,7 +38,7 @@ class Budget extends \Core\Model
             $statement->bindParam(':start_date', $_POST['start_date'], PDO::PARAM_STR);
             $statement->bindParam(':end_date', $_POST['end_date'], PDO::PARAM_STR);
             $statement->execute();
-            return $statement->fetchAll();
+            return $statement->fetchAll(PDO::FETCH_ASSOC);
         }
     
         return false;
@@ -66,7 +66,7 @@ class Budget extends \Core\Model
 
         if ($user) {
             $db = static::getDB();
-            $sql = 'SELECT expense_category_assigned_to_user, amount, expense_date AS date, comment, category AS name
+            $sql = 'SELECT expense_category_assigned_to_user, amount, expense_date AS date, comment, name
                     FROM expenses LEFT JOIN expense_category_default ON expenses.expense_category_assigned_to_user = expense_category_default.id
                     WHERE user_id = :user_id AND expense_date BETWEEN :start_date AND :end_date';
             $statement = $db->prepare($sql);
@@ -102,26 +102,10 @@ class Budget extends \Core\Model
 
         if ($user) {
             $db = static::getDB();
-            $sql = 'SELECT * FROM expense_category_default'; // WHERE id = :id
+            $sql = 'SELECT * FROM expense_category_default';
             $statement = $db->prepare($sql);
-            // $statement->bindParam(':id', $user->id, PDO::PARAM_INT);
             $statement->execute();
-            return $statement->fetch(PDO::FETCH_ASSOC);
-        }
-    
-        return false;
-    }
-
-    public static function getRevenueCategories() {
-        $user = Auth::getUser();
-
-        if ($user) {
-            $db = static::getDB();
-            $sql = 'SELECT * FROM revenue_category_default'; // WHERE id = :id
-            $statement = $db->prepare($sql);
-            // $statement->bindParam(':id', $user->id, PDO::PARAM_INT);
-            $statement->execute();
-            return $statement->fetch(PDO::FETCH_ASSOC);
+            return $statement->fetchAll(PDO::FETCH_ASSOC);
         }
     
         return false;
@@ -132,9 +116,63 @@ class Budget extends \Core\Model
 
         if ($user) {
             $db = static::getDB();
-            $sql = 'SELECT * FROM payment_method_default'; // WHERE id = :id
+            $sql = 'SELECT * FROM payment_method_default';
             $statement = $db->prepare($sql);
-            // $statement->bindParam(':id', $user->id, PDO::PARAM_INT);
+            $statement->execute();
+            return $statement->fetchAll(PDO::FETCH_ASSOC);
+        }
+    
+        return false;
+    }
+
+    public static function getRevenueCategories() {
+        $user = Auth::getUser();
+
+        if ($user) {
+            $db = static::getDB();
+            $sql = 'SELECT * FROM revenue_category_default';
+            $statement = $db->prepare($sql);
+            $statement->execute();
+            return $statement->fetchAll(PDO::FETCH_ASSOC);
+        }
+    
+        return false;
+    }
+
+    public static function addExpense() {
+        $user = Auth::getUser();
+
+        if ($user) {
+            $db = static::getDB();
+            $sql = 'INSERT INTO expenses (id, user_id, expense_category_assigned_to_user, payment_method_assigned_to_user, amount, expense_date, comment)
+                    VALUES (NULL, :user_id, :category, :method, :amount, :date, :comment)';
+            $statement = $db->prepare($sql);
+            $statement->bindParam(':user_id', $user->id, PDO::PARAM_INT);
+            $statement->bindParam(':category', $_POST['category'], PDO::PARAM_INT);
+            $statement->bindParam(':method', $_POST['method'], PDO::PARAM_INT);
+            $statement->bindParam(':amount', $_POST['amount'], PDO::PARAM_STR);
+            $statement->bindParam(':date', $_POST['date'], PDO::PARAM_STR);
+            $statement->bindParam(':comment', $_POST['comment'], PDO::PARAM_STR);
+            $statement->execute();
+            return $statement->fetch(PDO::FETCH_ASSOC);
+        }
+    
+        return false;
+    }
+
+    public static function addRevenue() {
+        $user = Auth::getUser();
+
+        if ($user) {
+            $db = static::getDB();
+            $sql = 'INSERT INTO revenues (id, user_id, revenue_category_assigned_to_user, amount, revenue_date, comment)
+                    VALUES (NULL, :user_id, :category, :amount, :date, :comment)';
+            $statement = $db->prepare($sql);
+            $statement->bindParam(':user_id', $user->id, PDO::PARAM_INT);
+            $statement->bindParam(':category', $_POST['category'], PDO::PARAM_INT);
+            $statement->bindParam(':amount', $_POST['amount'], PDO::PARAM_STR);
+            $statement->bindParam(':date', $_POST['date'], PDO::PARAM_STR);
+            $statement->bindParam(':comment', $_POST['comment'], PDO::PARAM_STR);
             $statement->execute();
             return $statement->fetch(PDO::FETCH_ASSOC);
         }
