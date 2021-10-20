@@ -33,16 +33,6 @@ body {
     color: #eee;
 }
 
-a {
-    text-decoration: none;
-    color: #ffca2c;
-}
-
-a:hover {
-    text-decoration: none;
-    color: #eee;
-}
-
 .error {
     color: red;
     margin: 10px 0 10px 0;

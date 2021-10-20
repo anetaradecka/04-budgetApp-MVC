@@ -13,6 +13,14 @@ use \App\Auth;
  */
 class Budget extends \Core\Model
 {
+    public static function toDecimal($value) {
+        return number_format((float)$value, 2, '.', '');
+    }
+
+    public static function getPeriod() {
+        return isset($_POST['period']) ? $_POST['period'] : 'current_month';
+    }
+
     public static function getStartDate() {
         $now = new DateTime();
         $start_date = (new DateTime())->setDate($now->format("Y"), $now->format("m"), 1);
@@ -150,7 +158,7 @@ class Budget extends \Core\Model
             $statement->bindParam(':user_id', $user->id, PDO::PARAM_INT);
             $statement->bindParam(':category', $_POST['category'], PDO::PARAM_INT);
             $statement->bindParam(':method', $_POST['method'], PDO::PARAM_INT);
-            $statement->bindParam(':amount', $_POST['amount'], PDO::PARAM_STR);
+            $statement->bindParam(':amount', static::toDecimal($_POST['amount']), PDO::PARAM_STR);
             $statement->bindParam(':date', $_POST['date'], PDO::PARAM_STR);
             $statement->bindParam(':comment', $_POST['comment'], PDO::PARAM_STR);
             $statement->execute();
@@ -170,7 +178,7 @@ class Budget extends \Core\Model
             $statement = $db->prepare($sql);
             $statement->bindParam(':user_id', $user->id, PDO::PARAM_INT);
             $statement->bindParam(':category', $_POST['category'], PDO::PARAM_INT);
-            $statement->bindParam(':amount', $_POST['amount'], PDO::PARAM_STR);
+            $statement->bindParam(':amount', static::toDecimal($_POST['amount']), PDO::PARAM_STR);
             $statement->bindParam(':date', $_POST['date'], PDO::PARAM_STR);
             $statement->bindParam(':comment', $_POST['comment'], PDO::PARAM_STR);
             $statement->execute();

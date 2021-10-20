@@ -44,7 +44,7 @@
 </script>
 {% endblock %}
 
-<main class="d-flex justify-content-center align-items-center vh-100 vw-100">
+<main class="d-flex justify-content-center align-items-center vw-100">
     <div id="container">
         <header id="logo">
             <h2>Open an account to </br> get started</h2>
@@ -74,14 +74,14 @@
                     <input type="password" class="form-control" id="password1" name="password1" placeholder="Password" required>
                 </div>
 
-                <div class="input-group mb-5 input-group-lg ps-3 pe-3">
+                <div class="input-group mb-3 input-group-lg ps-3 pe-3">
                     <span class="input-group-text"><i class="fas fa-unlock-alt fa-lg"></i></span>
                     <input type="password" class="form-control" id="password2" name="password2" placeholder="Repeat password">
                 </div>
-
-                <p class="d-flex justify-content-end">
-                    <button class="btn btn-link" id="show-password" type="button">Show password</button>
-                </p>
+                
+                <div class="d-flex justify-content-end input-group mb-5 input-group-lg ps-3 pe-3">
+                    <a id="show-password" href="#">Show password</a>
+                </div>
 
                 <script>
                     function cb() {
@@ -113,11 +113,10 @@
                 </div>
 
                 <div class="d-flex justify-content-center">
-                    <p class="text-white">Already a member? I <a href="index.php">Sign in to your account</a></p>
+                    <p class="text-white">Already a member? I <a href="/SignIn">Sign in to your account</a></p>
                 </div>
             </form>
         </div>
     </div>
 </main>
-
 {% endblock %}

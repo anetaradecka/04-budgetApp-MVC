@@ -1,13 +1,9 @@
 {% extends 'base.html' %} {% block title %}Expenses{% endblock %} {% block body %}
 <div>
-    <header>
-        <h2>Balance</h2>
-    </header>
-
-    <main>
-        <form method="post">
-            <div class="row">
-                <label for="period">Period</label>
+    <main class="main">
+            <form method="post">
+            <div class="row" style="width: 80%; margin: 20px auto;">
+                <label for="period">Select period</label>
                 <select class="form-control" name="period" id="period">
                     <option value="current_month">Current month</option>
                     <option value="previous_month">Previous month</option>

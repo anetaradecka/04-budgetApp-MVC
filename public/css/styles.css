@@ -11,6 +11,32 @@ header {
 	padding: 10px 0;
 }
 
+.welcome {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	text-align: center;
+}
+
+.main {
+    text-align: center;
+    background: #fff;
+    width: 60%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+a {
+    text-decoration: none;
+    color: #ffca2c;
+}
+
+a:hover {
+    text-decoration: none;
+    color: #eee;
+}
+
 .main {
 	text-align: center;
 	background: #fff;
@@ -19,13 +45,18 @@ header {
 	margin-right: auto;
 }
 
-
+/* Bootstrap container */
 .container {
+	background-color: #eaeaea;
+}
+
+.container-theme {
 	max-width: 60% !important;
 	background-color: #333D51;
 }
 
-.navbar-theme {
+.navbar-theme,
+.navbar-theme .container {
 	background-color: #333D51;
 	color: #fff;
 }
