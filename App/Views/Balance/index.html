@@ -17,7 +17,7 @@
                         const startDateInput = document.querySelector('#start-date');
                         const endDateInput = document.querySelector('#end-date');
 
-                        if (value == 'current_month') {
+                        if (value === 'current_month') {
                             const firstDayOfCurrentMonth = new Date();
                             const now = new Date();
 
@@ -26,7 +26,7 @@
                             startDateInput.value = firstDayOfCurrentMonth.toISOString().slice(0, 10);
                             endDateInput.value = now.toISOString().slice(0, 10);
 
-                        } else if (value == 'previous_month') {
+                        } else if (value === 'previous_month') {
                             const firstDayOfPreviousMonth = new Date();
                             const lastDayOfPreviousMonth = new Date();
 
@@ -38,7 +38,7 @@
 
                             startDateInput.value = firstDayOfPreviousMonth.toISOString().slice(0, 10);
                             endDateInput.value = lastDayOfPreviousMonth.toISOString().slice(0, 10);
-                        } else if (value == 'current_year') {
+                        } else if (value === 'current_year') {
                             const firstDayOfJanuary = new Date();
                             const now = new Date();
 
@@ -78,12 +78,12 @@
                 <td>{{ row.name }}</td>
                 <td>{{ row.date }}</td>
                 <td>{{ row.comment }}</td>
-                <td>{{ row.amount }}</td>
+                <td>{{ row.amount }} PLN</td>
             </tr>
             {% endfor %}
             <tr>
                 <td>Total</td>
-                <td colspan="3">{{total_revenues}}</td>
+                <td colspan="3">{{total_revenues}} PLN</td>
             </tr>
         </table>
 
@@ -96,12 +96,12 @@
                 <td>{{ row.name }}</td>
                 <td>{{ row.date }}</td>
                 <td>{{ row.comment }}</td>
-                <td>{{ row.amount }}</td>
+                <td>{{ row.amount }} PLN</td>
             </tr>
             {% endfor %}
             <tr>
                 <td>Total</td>
-                <td colspan="3">{{total_expenses}}</td>
+                <td colspan="3">{{total_expenses}} PLN</td>
             </tr>
         </table>
 
@@ -111,15 +111,15 @@
             </tr>
             <tr>
                 <td>Revenues</td>
-                <td>{{total_revenues}}</td>
+                <td>{{total_revenues}} PLN</td>
             </tr>
             <tr>
                 <td>Expenses</td>
-                <td>{{total_expenses}}</td>
+                <td>{{total_expenses}} PLN</td>
             </tr>
             <tr>
                 <td>Total</td>
-                <td>{{total_revenues - total_expenses}} PLN</td>
+                <td>{{total}} PLN</td>
             </tr>
         </table>
 </div>
