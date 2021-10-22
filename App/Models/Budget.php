@@ -162,11 +162,12 @@ class Budget extends \Core\Model
             $db = static::getDB();
             $sql = 'INSERT INTO expenses (id, user_id, expense_category_assigned_to_user, payment_method_assigned_to_user, amount, expense_date, comment)
                     VALUES (NULL, :user_id, :category, :method, :amount, :date, :comment)';
+            $amount = static::toDecimal($_POST['amount']);
             $statement = $db->prepare($sql);
             $statement->bindParam(':user_id', $user->id, PDO::PARAM_INT);
             $statement->bindParam(':category', $_POST['category'], PDO::PARAM_INT);
             $statement->bindParam(':method', $_POST['method'], PDO::PARAM_INT);
-            $statement->bindParam(':amount', static::toDecimal($_POST['amount']), PDO::PARAM_STR);
+            $statement->bindParam(':amount', $amount, PDO::PARAM_STR);
             $statement->bindParam(':date', $_POST['date'], PDO::PARAM_STR);
             $statement->bindParam(':comment', $_POST['comment'], PDO::PARAM_STR);
             $statement->execute();
@@ -183,10 +184,11 @@ class Budget extends \Core\Model
             $db = static::getDB();
             $sql = 'INSERT INTO revenues (id, user_id, revenue_category_assigned_to_user, amount, revenue_date, comment)
                     VALUES (NULL, :user_id, :category, :amount, :date, :comment)';
+            $amount = static::toDecimal($_POST['amount']);
             $statement = $db->prepare($sql);
             $statement->bindParam(':user_id', $user->id, PDO::PARAM_INT);
             $statement->bindParam(':category', $_POST['category'], PDO::PARAM_INT);
-            $statement->bindParam(':amount', static::toDecimal($_POST['amount']), PDO::PARAM_STR);
+            $statement->bindParam(':amount', $amount, PDO::PARAM_STR);
             $statement->bindParam(':date', $_POST['date'], PDO::PARAM_STR);
             $statement->bindParam(':comment', $_POST['comment'], PDO::PARAM_STR);
             $statement->execute();
