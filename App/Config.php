@@ -13,19 +13,22 @@ class Config
      * Database host
      * @var string
      */
-    const DB_HOST = 'localhost';
+    const DB_HOST = 'cl12.netmark.pl';
+    // const DB_HOST = 'localhost';
 
     /**
      * Database name
      * @var string
      */
-    const DB_NAME = 'budget-app';
+    const DB_NAME = 'anetarad_budgetapp';
+    // const DB_NAME = 'budget-app';
 
     /**
      * Database user
      * @var string
      */
-    const DB_USER = 'root';
+    const DB_USER = 'anetarad_HomeBudgetAdmin';
+    // const DB_USER = 'root';
 
     /**
      * Database password

@@ -118,8 +118,9 @@ class Budget extends \Core\Model
 
         if ($user) {
             $db = static::getDB();
-            $sql = 'SELECT * FROM expense_category_default';
+            $sql = 'SELECT * FROM expenses_category_assigned_to_user WHERE user_id = :user_id';
             $statement = $db->prepare($sql);
+            $statement->bindParam(':user_id', $user->id, PDO::PARAM_INT);
             $statement->execute();
             return $statement->fetchAll(PDO::FETCH_ASSOC);
         }
@@ -132,8 +133,9 @@ class Budget extends \Core\Model
 
         if ($user) {
             $db = static::getDB();
-            $sql = 'SELECT * FROM payment_method_default';
+            $sql = 'SELECT * FROM payment_method_assigned_to_user WHERE user_id = :user_id';
             $statement = $db->prepare($sql);
+            $statement->bindParam(':user_id', $user->id, PDO::PARAM_INT);
             $statement->execute();
             return $statement->fetchAll(PDO::FETCH_ASSOC);
         }
@@ -146,8 +148,9 @@ class Budget extends \Core\Model
 
         if ($user) {
             $db = static::getDB();
-            $sql = 'SELECT * FROM revenue_category_default';
+            $sql = 'SELECT * FROM revenue_categories_assigned_to_user WHERE user_id = :user_id';
             $statement = $db->prepare($sql);
+            $statement->bindParam(':user_id', $user->id, PDO::PARAM_INT);
             $statement->execute();
             return $statement->fetchAll(PDO::FETCH_ASSOC);
         }
