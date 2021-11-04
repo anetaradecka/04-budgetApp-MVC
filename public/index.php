@@ -36,6 +36,7 @@ $router = new Core\Router();
 $router->add('', ['controller' => 'Home', 'action' => 'index']);
 $router->add('Home', ['controller' => 'Home', 'action' => 'index']);
 $router->add('Balance', ['controller' => 'Balance', 'action' => 'index']);
+$router->add('Edit', ['controller' => 'Edit', 'action' => 'index']);
 $router->add('SignIn', ['controller' => 'SignIn', 'action' => 'new']);
 $router->add('SignOut', ['controller' => 'SignIn', 'action' => 'destroy']);
 $router->add('{controller}/{action}');

@@ -148,7 +148,7 @@ class Budget extends \Core\Model
 
         if ($user) {
             $db = static::getDB();
-            $sql = 'SELECT * FROM revenue_categories_assigned_to_user WHERE user_id = :user_id';
+            $sql = 'SELECT * FROM revenue_category_assigned_to_user WHERE user_id = :user_id';
             $statement = $db->prepare($sql);
             $statement->bindParam(':user_id', $user->id, PDO::PARAM_INT);
             $statement->execute();
@@ -203,5 +203,44 @@ class Budget extends \Core\Model
 
     public static function calculate($value1, $value2) {
         return static::toDecimal($value1 - $value2);
+    }
+    
+    public static function removeSelected() {
+        $revenue_categories = isset($_POST['revenue_category_ids']) ? $_POST['revenue_category_ids'] : false;
+        $expense_categories = isset($_POST['expense_category_ids']) ? $_POST['expense_category_ids'] : false;
+        $payment_methods = isset($_POST['payment_method_ids']) ? $_POST['payment_method_ids'] : false;
+        
+        
+        if ($revenue_categories) {
+            $user = Auth::getUser();
+            $db = static::getDB();
+            $sql = 'delete from revenue_category_assigned_to_user WHERE id = :revenue_category_ids AND user_id = :user_id';
+            $statement = $db->prepare($sql);
+            $statement->bindParam(':revenue_category_ids', $_POST['revenue_category_ids'], PDO::PARAM_INT);
+            $statement->bindParam(':user_id', $user->id, PDO::PARAM_INT);
+            $statement->execute();
+        }
+
+        if ($expense_categories) {
+            $user = Auth::getUser();
+            $db = static::getDB();
+            $sql = 'delete from expenses_category_assigned_to_user WHERE id = :expense_category_ids AND user_id = :user_id';
+            $statement = $db->prepare($sql);
+            $statement->bindParam(':expense_category_ids', $_POST['expense_category_ids'], PDO::PARAM_INT);
+            $statement->bindParam(':user_id', $user->id, PDO::PARAM_INT);
+            $statement->execute();
+        }
+
+        if ($payment_methods) {
+            $user = Auth::getUser();
+            $db = static::getDB();
+            $sql = 'delete from payment_method_assigned_to_user WHERE id = :payment_method_ids AND user_id = :user_id';
+            $statement = $db->prepare($sql);
+            $statement->bindParam(':payment_method_ids', $_POST['payment_method_ids'], PDO::PARAM_INT);
+            $statement->bindParam(':user_id', $user->id, PDO::PARAM_INT);
+            $statement->execute();
+        }
+
+        return false;
     }
 }

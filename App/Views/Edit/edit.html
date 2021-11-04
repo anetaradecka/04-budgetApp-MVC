@@ -1,0 +1,58 @@
+{% extends 'base.html' %} {% block title %}Edit{% endblock %} {% block body %}
+<div>
+    <main class="main">
+        <form method="post">
+            <table class="table">
+                <tr>
+                    <td colspan="2">Revenue categories</td>
+                </tr>
+                {% for row in revenue_categories %}
+                <tr>
+                    <td>{{ row.name }}</td>
+                    <td>
+                        <button class="btn btn-danger" type="submit" name="revenue_category_ids" value="{{row.id}}">
+                            <i class="fa fa-trash"></i>
+                        </button>
+                    </td>
+                </tr>
+                {% endfor %}
+                <tr></tr>
+            </table>
+
+            <table class="table">
+                <tr>
+                    <td colspan="2">Expense categories</td>
+                </tr>
+                {% for row in expense_categories %}
+                <tr>
+                    <td>{{ row.name }}</td>
+                    <td>
+                        <button class="btn btn-danger" type="submit" name="expense_category_ids" value="{{row.id}}">
+                            <i class="fa fa-trash"></i>
+                        </button>
+                    </td>
+                </tr>
+                {% endfor %}
+                <tr></tr>
+            </table>
+
+            <table class="table">
+                <tr>
+                    <td colspan="2">Payment methods</td>
+                </tr>
+                {% for row in payment_methods %}
+                <tr>
+                    <td>{{ row.name }}</td>
+                    <td>
+                        <button class="btn btn-danger" type="submit" name="payment_method_ids" value="{{row.id}}">
+                            <i class="fa fa-trash"></i>
+                        </button>
+                    </td>
+                </tr>
+                {% endfor %}
+                <tr></tr>
+            </table>
+        </form>
+    </main>
+</div>
+{% endblock %}
