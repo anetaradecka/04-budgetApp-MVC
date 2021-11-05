@@ -2,56 +2,87 @@
 <div>
     <main class="main">
         <form method="post">
-            <table class="table">
-                <tr>
-                    <td colspan="2">Revenue categories</td>
-                </tr>
-                {% for row in revenue_categories %}
-                <tr>
-                    <td>{{ row.name }}</td>
-                    <td>
-                        <button class="btn btn-danger" type="submit" name="revenue_category_ids" value="{{row.id}}">
-                            <i class="fa fa-trash"></i>
-                        </button>
-                    </td>
-                </tr>
-                {% endfor %}
-                <tr></tr>
-            </table>
+            <section>
+                <table class="table">
+                    <tr>
+                        <td colspan="2">Revenue categories</td>
+                    </tr>
+                    {% for row in revenue_categories %}
+                    <tr>
+                        <td>{{ row.name }}</td>
+                        <td>
+                            <button class="btn btn-danger" type="submit" name="revenue_category_ids" value="{{row.id}}">
+                                <i class="fa fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    <tr></tr>
+                </table>
+                
+                <div class="input-group mb-3" style="width: 80%; margin: 0 auto;">
+                    <input class="form-control" type="text" name="new_revenue_category">
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-secondary" type="submit">Add revenue category</button>
+                    </div>
+                </div>
+            </section>
 
-            <table class="table">
-                <tr>
-                    <td colspan="2">Expense categories</td>
-                </tr>
-                {% for row in expense_categories %}
-                <tr>
-                    <td>{{ row.name }}</td>
-                    <td>
-                        <button class="btn btn-danger" type="submit" name="expense_category_ids" value="{{row.id}}">
-                            <i class="fa fa-trash"></i>
-                        </button>
-                    </td>
-                </tr>
-                {% endfor %}
-                <tr></tr>
-            </table>
+            <section>
+                <table class="table">
+                    <tr>
+                        <td colspan="2">Expense categories</td>
+                    </tr>
+                    {% for row in expense_categories %}
+                    <tr>
+                        <td>{{ row.name }}</td>
+                        <td>
+                            <button class="btn btn-danger" type="submit" name="expense_category_ids" value="{{row.id}}">
+                                <i class="fa fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    <tr></tr>
+                </table>
 
-            <table class="table">
-                <tr>
-                    <td colspan="2">Payment methods</td>
-                </tr>
-                {% for row in payment_methods %}
-                <tr>
-                    <td>{{ row.name }}</td>
-                    <td>
-                        <button class="btn btn-danger" type="submit" name="payment_method_ids" value="{{row.id}}">
-                            <i class="fa fa-trash"></i>
-                        </button>
-                    </td>
-                </tr>
-                {% endfor %}
-                <tr></tr>
-            </table>
+                <hr>
+
+                <div class="input-group mb-3" style="width: 80%; margin: 0 auto;">
+                    <input class="form-control" type="text" name="new_expense_category">
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-secondary" type="submit">Add expense category</button>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <table class="table">
+                    <tr>
+                        <td colspan="2">Payment methods</td>
+                    </tr>
+                    {% for row in payment_methods %}
+                    <tr>
+                        <td>{{ row.name }}</td>
+                        <td>
+                            <button class="btn btn-danger" type="submit" name="payment_method_ids" value="{{row.id}}">
+                                <i class="fa fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    <tr></tr>
+                </table>
+
+                <hr>
+
+                <div class="input-group mb-3" style="width: 80%; margin: 0 auto;">
+                    <input class="form-control" type="text" name="new_payment_method">
+                    <div class="input-group-append">
+                      <button class="btn btn-outline-secondary" type="submit">Add payment method</button>
+                    </div>
+                </div>
+            </section>
         </form>
     </main>
 </div>

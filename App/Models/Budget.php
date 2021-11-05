@@ -118,7 +118,7 @@ class Budget extends \Core\Model
 
         if ($user) {
             $db = static::getDB();
-            $sql = 'SELECT * FROM expenses_category_assigned_to_user WHERE user_id = :user_id';
+            $sql = 'SELECT * FROM expense_category_assigned_to_user WHERE user_id = :user_id';
             $statement = $db->prepare($sql);
             $statement->bindParam(':user_id', $user->id, PDO::PARAM_INT);
             $statement->execute();
@@ -204,42 +204,99 @@ class Budget extends \Core\Model
     public static function calculate($value1, $value2) {
         return static::toDecimal($value1 - $value2);
     }
-    
-    public static function removeSelected() {
-        $revenue_categories = isset($_POST['revenue_category_ids']) ? $_POST['revenue_category_ids'] : false;
-        $expense_categories = isset($_POST['expense_category_ids']) ? $_POST['expense_category_ids'] : false;
-        $payment_methods = isset($_POST['payment_method_ids']) ? $_POST['payment_method_ids'] : false;
-        
-        
-        if ($revenue_categories) {
+
+    public static function deleteRevenueCategory() {
+        $revenue_category = isset($_POST['revenue_category_ids']) ? $_POST['revenue_category_ids'] : false;
+
+        if ($revenue_category) {
             $user = Auth::getUser();
             $db = static::getDB();
             $sql = 'delete from revenue_category_assigned_to_user WHERE id = :revenue_category_ids AND user_id = :user_id';
             $statement = $db->prepare($sql);
-            $statement->bindParam(':revenue_category_ids', $_POST['revenue_category_ids'], PDO::PARAM_INT);
+            $statement->bindParam(':revenue_category_ids', $revenue_category, PDO::PARAM_INT);
             $statement->bindParam(':user_id', $user->id, PDO::PARAM_INT);
             $statement->execute();
         }
+    }
 
-        if ($expense_categories) {
+    public static function deleteExpenseCategory() {
+        $expense_category = isset($_POST['expense_category_ids']) ? $_POST['expense_category_ids'] : false;
+
+        if ($expense_category) {
             $user = Auth::getUser();
             $db = static::getDB();
-            $sql = 'delete from expenses_category_assigned_to_user WHERE id = :expense_category_ids AND user_id = :user_id';
+            $sql = 'delete from expense_category_assigned_to_user WHERE id = :expense_category_ids AND user_id = :user_id';
             $statement = $db->prepare($sql);
-            $statement->bindParam(':expense_category_ids', $_POST['expense_category_ids'], PDO::PARAM_INT);
+            $statement->bindParam(':expense_category_ids', $expense_category, PDO::PARAM_INT);
             $statement->bindParam(':user_id', $user->id, PDO::PARAM_INT);
             $statement->execute();
         }
+    }
 
-        if ($payment_methods) {
+    public static function deletePaymentMethod() {
+        $payment_method = isset($_POST['payment_method_ids']) ? $_POST['payment_method_ids'] : false;
+
+        if ($payment_method) {
             $user = Auth::getUser();
             $db = static::getDB();
             $sql = 'delete from payment_method_assigned_to_user WHERE id = :payment_method_ids AND user_id = :user_id';
             $statement = $db->prepare($sql);
-            $statement->bindParam(':payment_method_ids', $_POST['payment_method_ids'], PDO::PARAM_INT);
+            $statement->bindParam(':payment_method_ids', $payment_method, PDO::PARAM_INT);
             $statement->bindParam(':user_id', $user->id, PDO::PARAM_INT);
             $statement->execute();
         }
+    }
+
+    public static function addRevenueCategory() {
+        $new_revenue_category = isset($_POST['new_revenue_category']) ? $_POST['new_revenue_category'] : false;
+
+        if ($new_revenue_category) {
+            $user = Auth::getUser();
+            $db = static::getDB();
+            $sql = 'insert into revenue_category_assigned_to_user (user_id, name) VALUES (:user_id, :name)';
+            $statement = $db->prepare($sql);
+            $statement->bindParam(':user_id', $user->id, PDO::PARAM_INT);
+            $statement->bindParam(':name', $new_revenue_category, PDO::PARAM_STR);
+            $statement->execute();
+        }
+    }
+
+    public static function addExpenseCategory() {
+        $new_expense_category = isset($_POST['new_expense_category']) ? $_POST['new_expense_category'] : false;
+
+        if ($new_expense_category) {
+            $user = Auth::getUser();
+            $db = static::getDB();
+            $sql = 'insert into expense_category_assigned_to_user (user_id, name) VALUES (:user_id, :name)';
+            $statement = $db->prepare($sql);
+            $statement->bindParam(':user_id', $user->id, PDO::PARAM_INT);
+            $statement->bindParam(':name', $new_expense_category, PDO::PARAM_STR);
+            $statement->execute();
+        }
+    }
+
+    public static function addPaymentMethod() {
+        $new_payment_method = isset($_POST['new_payment_method']) ? $_POST['new_payment_method'] : false;
+
+        if ($new_payment_method) {
+            $user = Auth::getUser();
+            $db = static::getDB();
+            $sql = 'insert into payment_method_assigned_to_user (user_id, name) VALUES (:user_id, :name)';
+            $statement = $db->prepare($sql);
+            $statement->bindParam(':user_id', $user->id, PDO::PARAM_INT);
+            $statement->bindParam(':name', $new_payment_method, PDO::PARAM_STR);
+            $statement->execute();
+        }
+    }
+    
+    public static function edit() {
+        static::deleteRevenueCategory();
+        static::deleteExpenseCategory();
+        static::deletePaymentMethod();
+
+        static::addRevenueCategory();
+        static::addExpenseCategory();
+        static::addPaymentMethod();
 
         return false;
     }

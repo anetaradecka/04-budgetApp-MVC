@@ -9,19 +9,12 @@ class Edit extends Authenticated
 {
     public function indexAction()
     {
-        Budget::removeSelected();
+        Budget::edit();
 
         View::renderTemplate('Edit/edit.html', [
             'revenue_categories' => Budget::getRevenueCategories(),
             'expense_categories' => Budget::getExpenseCategories(),
             'payment_methods' => Budget::getPaymentMethods()
         ]);
-    }
-
-    public function saveAction()
-    {
-        // View::renderTemplate('Edit/edit.html', [
-        //     'success' => Budget::saveChanges()
-        // ]);
     }
 }
