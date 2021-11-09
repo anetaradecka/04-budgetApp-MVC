@@ -28,7 +28,7 @@
                         <select class="form-select" name="category" aria-label="Default select example">
                             <option disabled>Select revenue category</option>
                             {% for category in revenue_categories %}
-                            <option value="{{category.id}}">{{category.name}}</option>
+                            <option value="{{category.revenue_category_id}}">{{category.name}}</option>
                             {% endfor %}
                         </select>
                     </div>

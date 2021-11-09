@@ -26,6 +26,7 @@
                         <button class="btn btn-outline-secondary" type="submit">Add revenue category</button>
                     </div>
                 </div>
+                <hr>
             </section>
 
             <section>
@@ -46,14 +47,22 @@
                     <tr></tr>
                 </table>
 
-                <hr>
-
                 <div class="input-group mb-3" style="width: 80%; margin: 0 auto;">
                     <input class="form-control" type="text" name="new_expense_category">
+                </div>
+                <div class="input-group mb-3" style="width: 80%; margin: 0 auto;">
+                    <input class="form-control" type="checkbox" name="has_limit">
+                    <input type="text" value="0.00" name="expense_limit">
                     <div class="input-group-append">
                         <button class="btn btn-outline-secondary" type="submit">Add expense category</button>
                     </div>
                 </div>
+                <script>
+                    fetch('//budget.anetaradecka.pl/Expenses/validate?id=1&amount=999')
+                </script>
+
+                <hr>
+                
             </section>
 
             <section>
@@ -74,14 +83,13 @@
                     <tr></tr>
                 </table>
 
-                <hr>
-
                 <div class="input-group mb-3" style="width: 80%; margin: 0 auto;">
                     <input class="form-control" type="text" name="new_payment_method">
                     <div class="input-group-append">
                       <button class="btn btn-outline-secondary" type="submit">Add payment method</button>
                     </div>
                 </div>
+                
             </section>
         </form>
     </main>

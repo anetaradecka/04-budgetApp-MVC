@@ -7,6 +7,17 @@ use \App\Models\Budget;
 
 class Expenses extends Authenticated
 {
+    public function validateAction()
+    {
+        $expense_id = htmlspecialchars($_GET['id']);
+        $expense_amount = htmlspecialchars($_GET['amount']);
+        $limit_exceeded = Budget::validate($expense_id, $expense_amount);
+
+        header('Content-Type: application/json; charset=utf-8');
+        header('X-Limit-Exceeded: ' . $limit_exceeded);
+        exit;
+    }
+
     public function addAction()
     {
         View::renderTemplate('Expenses/add.html', [

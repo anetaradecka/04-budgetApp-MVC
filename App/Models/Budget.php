@@ -263,14 +263,18 @@ class Budget extends \Core\Model
 
     public static function addExpenseCategory() {
         $new_expense_category = isset($_POST['new_expense_category']) ? $_POST['new_expense_category'] : false;
+        $has_limit = isset($_POST['has_limit']) ? $_POST['has_limit'] : false;
+        $expense_limit = isset($_POST['expense_limit']) ? $_POST['expense_limit'] : false;
 
         if ($new_expense_category) {
             $user = Auth::getUser();
             $db = static::getDB();
-            $sql = 'insert into expense_category_assigned_to_user (user_id, name) VALUES (:user_id, :name)';
+            $sql = 'insert into expense_category_assigned_to_user (user_id, name, has_limit, expense_limit) VALUES (:user_id, :name, :has_limit, :expense_limit)';
             $statement = $db->prepare($sql);
             $statement->bindParam(':user_id', $user->id, PDO::PARAM_INT);
             $statement->bindParam(':name', $new_expense_category, PDO::PARAM_STR);
+            $statement->bindParam(':has_limit', $has_limit, PDO::PARAM_BOOL);
+            $statement->bindParam(':expense_limit', $expense_limit, PDO::PARAM_STR);
             $statement->execute();
         }
     }
@@ -297,6 +301,50 @@ class Budget extends \Core\Model
         static::addRevenueCategory();
         static::addExpenseCategory();
         static::addPaymentMethod();
+
+        return false;
+    }
+
+    public static function getCurrentMonthExpenses($expense_id) {
+        $user = Auth::getUser();
+        $start_date = Budget::getStartDate();
+        
+        // Ile uzytkownik wydal w biezacym miesiacu na dana kategorie?
+        $db = static::getDB();
+        $sql = 'select sum(amount) as amount from expenses where expense_date >= :start_date and expense_category_assigned_to_user = :expense_id and user_id = :user_id';
+        $statement = $db->prepare($sql);
+        $statement->bindParam(':start_date', $start_date, PDO::PARAM_STR);// DZIALA JAK RECZNIE WPISZE SIE, NP. '2021-08-01' Z APOSTROFAMI
+        $statement->bindParam(':expense_id', $expense_id, PDO::PARAM_STR);
+        $statement->bindParam(':user_id', $user->id, PDO::PARAM_INT);
+        $statement->execute();
+
+        return $statement->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public static function getExpenseMetadata($expense_id) {
+        $user = Auth::getUser();
+
+        // Czy uzytkownik ustawil limit (jaki?) na wybranej kategorii?
+        $db = static::getDB();
+        $sql = 'select has_limit, expense_limit from expense_category_assigned_to_user where expense_category_id = :expense_id and user_id = :user_id';
+        $statement = $db->prepare($sql);
+        $statement->bindParam(':expense_id', $expense_id, PDO::PARAM_INT);
+        $statement->bindParam(':user_id', $user->id, PDO::PARAM_INT);
+        $statement->execute();
+        
+        return $statement->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public static function validate($expense_id, $expense_amount) {
+        $currentMonthExpenses = static::getCurrentMonthExpenses($expense_id, $expense_amount);
+        $expenseMetadata = static::getExpenseMetadata($expense_id, $expense_amount);
+
+        // Czy po dodaniu $expense_amount przekroczymy limit dla tej kategorii?
+        if ($expenseMetadata['has_limit']) {
+            // NA POTRZEBY TESTOWANIA ODPOWIEDZI
+            return json_encode($currentMonthExpenses);
+            // return static::toDecimal($currentMonthExpenses['amount']) + static::toDecimal($expense_amount) > static::toDecimal($expenseMetadata['expense_limit']);
+        }
 
         return false;
     }
