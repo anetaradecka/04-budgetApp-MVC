@@ -26,9 +26,8 @@ class Expenses extends Authenticated
         ]);
     }
 
-    public function addedAction()
+    public function submitAction()
     {
         Budget::addExpense();
-        View::renderTemplate('Expenses/added.html');
     }
 }

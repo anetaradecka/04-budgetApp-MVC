@@ -307,18 +307,15 @@ class Budget extends \Core\Model
 
     public static function getCurrentMonthExpenses($expense_id) {
         $user = Auth::getUser();
-        $start_date = Budget::getStartDate();
+        $user_id = $user->id;
+        $start_date = date('Y-m-01');
         
         // Ile uzytkownik wydal w biezacym miesiacu na dana kategorie?
         $db = static::getDB();
-        $sql = 'select sum(amount) as amount from expenses where expense_date >= :start_date and expense_category_assigned_to_user = :expense_id and user_id = :user_id';
-        $statement = $db->prepare($sql);
-        $statement->bindParam(':start_date', $start_date, PDO::PARAM_STR);// DZIALA JAK RECZNIE WPISZE SIE, NP. '2021-08-01' Z APOSTROFAMI
-        $statement->bindParam(':expense_id', $expense_id, PDO::PARAM_STR);
-        $statement->bindParam(':user_id', $user->id, PDO::PARAM_INT);
-        $statement->execute();
+        $sql = "select sum(amount) as amount from expenses where expense_date >= '" . $start_date . "' and expense_category_assigned_to_user = " . $expense_id . " and user_id = " . $user_id;
+        $response = $db->query($sql)->fetch();
 
-        return $statement->fetch(PDO::FETCH_ASSOC);
+        return static::toDecimal($response['amount']);
     }
 
     public static function getExpenseMetadata($expense_id) {
@@ -338,12 +335,12 @@ class Budget extends \Core\Model
     public static function validate($expense_id, $expense_amount) {
         $currentMonthExpenses = static::getCurrentMonthExpenses($expense_id, $expense_amount);
         $expenseMetadata = static::getExpenseMetadata($expense_id, $expense_amount);
+        $expense_limit = static::toDecimal($expenseMetadata['expense_limit']);
+        $new_expense = static::toDecimal($expense_amount);
 
         // Czy po dodaniu $expense_amount przekroczymy limit dla tej kategorii?
         if ($expenseMetadata['has_limit']) {
-            // NA POTRZEBY TESTOWANIA ODPOWIEDZI
-            return json_encode($currentMonthExpenses);
-            // return static::toDecimal($currentMonthExpenses['amount']) + static::toDecimal($expense_amount) > static::toDecimal($expenseMetadata['expense_limit']);
+            return json_encode($currentMonthExpenses + $new_expense > $expense_limit);
         }
 
         return false;
