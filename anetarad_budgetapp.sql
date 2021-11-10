@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Nov 09, 2021 at 08:16 PM
+-- Generation Time: Nov 10, 2021 at 01:21 PM
 -- Server version: 8.0.27
 -- PHP Version: 7.3.32
 
@@ -272,7 +272,7 @@ CREATE TRIGGER `INSERT DEFAULT PAYMENT METHODS` AFTER INSERT ON `users` FOR EACH
 $$
 DELIMITER ;
 DELIMITER $$
-CREATE TRIGGER `INSERT DEFAULT REVENUE CATEGORIES` AFTER INSERT ON `users` FOR EACH ROW INSERT INTO `revenue_categories_assigned_to_user` (user_id, revenue_category_id, name) SELECT NEW.id, id, name FROM `revenue_category_default`
+CREATE TRIGGER `INSERT DEFAULT REVENUE CATEGORIES` AFTER INSERT ON `users` FOR EACH ROW INSERT INTO `revenue_category_assigned_to_user` (user_id, revenue_category_id, name) SELECT NEW.id, id, name FROM `revenue_category_default`
 $$
 DELIMITER ;
 
@@ -360,7 +360,7 @@ ALTER TABLE `expense_category_default`
 -- AUTO_INCREMENT for table `payment_method_assigned_to_user`
 --
 ALTER TABLE `payment_method_assigned_to_user`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=59;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=66;
 
 --
 -- AUTO_INCREMENT for table `payment_method_default`
@@ -390,7 +390,7 @@ ALTER TABLE `revenue_category_default`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=40;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
