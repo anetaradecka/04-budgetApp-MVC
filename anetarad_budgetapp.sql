@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Nov 10, 2021 at 01:21 PM
+-- Generation Time: Nov 10, 2021 at 11:27 PM
 -- Server version: 8.0.27
 -- PHP Version: 7.3.32
 
@@ -52,7 +52,14 @@ INSERT INTO `expenses` (`id`, `user_id`, `expense_category_assigned_to_user`, `a
 (10, 27, 1, 100.00, '2021-10-15', 1, ''),
 (11, 27, 1, 350.49, '2021-10-22', 2, 'Test expense'),
 (12, 38, 1, 570.00, '2021-08-17', 58, 'Popo'),
-(13, 38, 1, 100.00, '2021-08-31', 57, 'test');
+(13, 38, 1, 100.00, '2021-08-31', 57, 'test'),
+(14, 38, 1, 120.00, '2021-11-10', 57, 'Koko'),
+(15, 38, 1, 33.00, '2021-11-10', 57, 'koko hoho'),
+(16, 38, 1, 19.00, '2021-11-10', 57, 'test koko'),
+(17, 38, 1, 200.00, '2021-08-05', 58, 'nieprzekroczony'),
+(18, 44, 49, 50.00, '2021-11-10', 94, ''),
+(19, 44, 49, 20.00, '2021-08-05', 94, ''),
+(20, 44, 49, 10.00, '2021-11-10', 94, '');
 
 -- --------------------------------------------------------
 
@@ -73,12 +80,41 @@ CREATE TABLE `expense_category_assigned_to_user` (
 --
 
 INSERT INTO `expense_category_assigned_to_user` (`user_id`, `expense_category_id`, `name`, `has_limit`, `expense_limit`) VALUES
-(38, 1, 'limitowany expense', 1, 700.00),
-(38, 2, 'home & bills', 0, 0.00),
+(44, 1, 'groceries', 0, 0.00),
+(44, 2, 'home & bills', 0, 0.00),
 (44, 3, 'car', 0, 0.00),
+(44, 4, 'phone & Internet', 0, 0.00),
+(44, 5, 'health care', 0, 0.00),
+(44, 6, 'clothes', 0, 0.00),
 (44, 7, 'beauty', 0, 0.00),
+(44, 8, 'kids', 0, 0.00),
+(44, 9, 'entertainment', 0, 0.00),
+(44, 10, 'travels', 0, 0.00),
+(44, 11, 'education', 0, 0.00),
 (44, 12, 'savings', 0, 0.00),
-(44, 15, 'pension', 0, 0.00);
+(44, 13, 'debts', 0, 0.00),
+(44, 14, 'books', 0, 0.00),
+(44, 15, 'pension', 0, 0.00),
+(44, 16, 'charity', 0, 0.00),
+(44, 17, 'other expenses', 0, 0.00),
+(46, 18, 'groceries', 0, 0.00),
+(46, 19, 'home & bills', 0, 0.00),
+(46, 20, 'car', 0, 0.00),
+(46, 21, 'phone & Internet', 0, 0.00),
+(46, 22, 'health care', 0, 0.00),
+(46, 23, 'clothes', 0, 0.00),
+(46, 24, 'beauty', 0, 0.00),
+(46, 25, 'kids', 0, 0.00),
+(46, 26, 'entertainment', 0, 0.00),
+(46, 27, 'travels', 0, 0.00),
+(46, 28, 'education', 0, 0.00),
+(46, 29, 'savings', 0, 0.00),
+(46, 30, 'debts', 0, 0.00),
+(46, 31, 'books', 0, 0.00),
+(46, 32, 'pension', 0, 0.00),
+(46, 33, 'charity', 0, 0.00),
+(46, 34, 'other expenses', 0, 0.00),
+(44, 49, 'limitowana kategoria', 1, 100.00);
 
 -- --------------------------------------------------------
 
@@ -135,7 +171,15 @@ CREATE TABLE `payment_method_assigned_to_user` (
 
 INSERT INTO `payment_method_assigned_to_user` (`id`, `user_id`, `payment_method_id`, `name`) VALUES
 (57, 38, 0, 'BLIK'),
-(58, 38, 0, 'cash');
+(58, 38, 0, 'cash'),
+(94, 44, 1, 'cash'),
+(95, 44, 2, 'debit card'),
+(96, 44, 3, 'credit card'),
+(97, 44, 4, 'BLIK'),
+(108, 46, 1, 'cash'),
+(109, 46, 2, 'debit card'),
+(110, 46, 3, 'credit card'),
+(111, 46, 4, 'BLIK');
 
 -- --------------------------------------------------------
 
@@ -211,7 +255,17 @@ CREATE TABLE `revenue_category_assigned_to_user` (
 INSERT INTO `revenue_category_assigned_to_user` (`id`, `user_id`, `revenue_category_id`, `name`) VALUES
 (1, 38, 1, 'Salary'),
 (13, 38, 2, 'Passive income'),
-(14, 38, 4, 'Pension');
+(14, 38, 4, 'Pension'),
+(24, 44, 1, 'Salary'),
+(25, 44, 2, 'Passive income'),
+(26, 44, 3, 'Investments'),
+(27, 44, 4, 'Pension'),
+(28, 44, 5, 'Other revenues'),
+(38, 46, 1, 'Salary'),
+(39, 46, 2, 'Passive income'),
+(40, 46, 3, 'Investments'),
+(41, 46, 4, 'Pension'),
+(42, 46, 5, 'Other revenues');
 
 -- --------------------------------------------------------
 
@@ -252,19 +306,17 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `username`, `password`) VALUES
-(18, 'dingo', '$2y$10$pfssixtndYJMWk7Z25kC0OaDgYs7ZmNLDIfp1qDIzG107jvhjrDc6'),
 (19, 'franek', '$2y$10$IkPU4Lr4kcFk5.9S3g3aL.3P2JyluREWpwdI.30VITHPnMIzrjLkO'),
-(21, 'harry', '$2y$10$mkA3Vsg.qbFG07f4TwR3pecIoLGcaXa3eBkRwGerVX.Jqu2ASisFm'),
 (26, 'kokosza', '$2y$10$fWuq/f4yTaz5BSm7sUIsYu5rBBBd/K5MMkMl0Ce5YwwHpDV8GsEWu'),
 (27, 'programista', '$2y$10$NmuKODn3aS6qO6Yf3v5ycO.fkVjT8HyfRahUQ4Uw9eCf2vv58E9yS'),
-(29, 'papuga', '$2y$10$BEFpJ5tlS/so87o/ICuPfOIsGmNdvhfSrXzNo8HOCiFsc1shRd4rq'),
-(38, 'swinka', '$2y$10$qGDpC8F4U2qQNOTGDpC2cu6vtWP2z4nJwkz7lml5pVBz2Ys8T4BzS');
+(44, 'testowy', '$2y$10$/A.l6g117YrfdABUzTmBE.KDpfBGwqn9/HR2URzNAn6eVm7bzJMzu'),
+(46, 'swinka', '$2y$10$4iLtWuzR0nAVygOrq3X6HO3OYKSQkue7hM3HqMaXbO1sRNTMhquxi');
 
 --
 -- Triggers `users`
 --
 DELIMITER $$
-CREATE TRIGGER `INSERT DEFAULT EXPENSE CATEGORIES` AFTER INSERT ON `users` FOR EACH ROW INSERT INTO `expenses_category_assigned_to_user` (user_id, expense_category_id, name, has_limit, expense_limit) SELECT NEW.id, id, name, has_limit, expense_limit FROM `expense_category_default`
+CREATE TRIGGER `INSERT DEFAULT EXPENSE CATEGORIES` AFTER INSERT ON `users` FOR EACH ROW INSERT INTO `expense_category_assigned_to_user` (user_id, name, has_limit, expense_limit) SELECT NEW.id, name, has_limit, expense_limit FROM `expense_category_default`
 $$
 DELIMITER ;
 DELIMITER $$
@@ -342,13 +394,13 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `expenses`
 --
 ALTER TABLE `expenses`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT for table `expense_category_assigned_to_user`
 --
 ALTER TABLE `expense_category_assigned_to_user`
-  MODIFY `expense_category_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `expense_category_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=50;
 
 --
 -- AUTO_INCREMENT for table `expense_category_default`
@@ -360,7 +412,7 @@ ALTER TABLE `expense_category_default`
 -- AUTO_INCREMENT for table `payment_method_assigned_to_user`
 --
 ALTER TABLE `payment_method_assigned_to_user`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=66;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=115;
 
 --
 -- AUTO_INCREMENT for table `payment_method_default`
@@ -378,7 +430,7 @@ ALTER TABLE `revenues`
 -- AUTO_INCREMENT for table `revenue_category_assigned_to_user`
 --
 ALTER TABLE `revenue_category_assigned_to_user`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45;
 
 --
 -- AUTO_INCREMENT for table `revenue_category_default`
@@ -390,7 +442,7 @@ ALTER TABLE `revenue_category_default`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=40;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=47;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
