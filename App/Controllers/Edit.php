@@ -17,4 +17,10 @@ class Edit extends Authenticated
             'payment_methods' => Budget::getPaymentMethods()
         ]);
     }
+
+    public function expenseAction()
+    {
+        header('Content-Type: application/json; charset=utf-8');
+        exit;
+    }
 }

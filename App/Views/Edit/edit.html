@@ -30,7 +30,7 @@
             </section>
 
             <section>
-                <table class="table">
+                <table class="table expense-categories">
                     <tr>
                         <td colspan="2">Expense categories</td>
                     </tr>
@@ -38,6 +38,15 @@
                     <tr>
                         <td>{{ row.name }}</td>
                         <td>
+                            <button class="btn btn-primary btn-edit"
+                                    type="button"
+                                    data-user-id="{{row.user_id}}"
+                                    data-name="{{row.name}}"
+                                    data-expense-category-id="{{row.expense_category_id}}"
+                                    data-has-limit="{{row.has_limit}}"
+                                    data-expense-limit="{{row.expense_limit}}">
+                                Edit
+                            </button>
                             <button class="btn btn-danger" type="submit" name="expense_category_ids" value="{{row.id}}">
                                 <i class="fa fa-trash"></i>
                             </button>
@@ -54,7 +63,7 @@
                     <input type="checkbox" name="has_limit">
                     <input type="text" value="0.00" name="expense_limit">
                     <div class="input-group-append">
-                        <button class="btn btn-outline-secondary" type="submit">Add expense category</button>
+                        <button class="btn btn-outline-secondary" type="submit">Save</button>
                     </div>
                 </div>
 
@@ -88,7 +97,73 @@
                 </div>
                 
             </section>
+
+            <script>
+                document.querySelector('.table.expense-categories').addEventListener('click', event => {
+                    if (event.target.className.includes('btn-edit')) {
+                        const { userId, name, expenseCategoryId, hasLimit, expenseLimit } = event.target.dataset;
+
+                        if (hasLimit === '0') {
+                            document.querySelector('#edit-has-limit').removeAttribute('checked');
+                        }
+
+                        if (hasLimit === '1') {
+                            document.querySelector('#edit-has-limit').setAttribute('checked', '');
+                        }
+
+                        document.querySelector('#edit-name').value =  name;
+                        document.querySelector('#edit-expense-limit').value =  expenseLimit;
+                        document.querySelector('#modal').style.display = 'initial';
+
+                        document.querySelector('#save-button').addEventListener('click', () => {
+                            const name = document.querySelector('#edit-name').value;
+                            const expenseLimit = document.querySelector('#edit-expense-limit').value;
+                            const hasLimit = document.querySelector('#edit-has-limit').checked ? '1' : '0';
+
+                            fetch(`//budget.anetaradecka.pl/Edit/expense?user_id=${userId}&name=${name}&has_limit=${hasLimit}&expense_limit=${expenseLimit}`)
+                                .then(console.log)
+                                // .finally(location.reload);
+                        });
+                    }
+                });
+            </script>
         </form>
+
+        <div class="modal" id="modal" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Edit expense</h5>
+                        <button type="button" class="btn close" id="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="input-group">
+                            <input class="form-control" id="edit-name" type="text" name="name" placeholder="Name">
+                        </div>
+                        <div class="input-group">
+                            <p>
+                                <input id="edit-has-limit" type="checkbox" name="has_limit">
+                                Has limit?
+                            </p>
+                        <div class="input-group">
+                        </div>
+                            <input class="form-control" id="edit-expense-limit" type="text" name="expense_limit" placeholder="Expense limit">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" id="save-button">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            document.querySelector('#close').addEventListener('click', () => {
+                document.querySelector('#modal').style.display = 'none';
+            });
+        </script>
     </main>
 </div>
 {% endblock %}
