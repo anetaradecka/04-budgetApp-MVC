@@ -225,7 +225,7 @@ class Budget extends \Core\Model
         if ($expense_category) {
             $user = Auth::getUser();
             $db = static::getDB();
-            $sql = 'delete from expense_category_assigned_to_user WHERE id = :expense_category_ids AND user_id = :user_id';
+            $sql = 'delete from expense_category_assigned_to_user WHERE expense_category_id = :expense_category_ids AND user_id = :user_id';
             $statement = $db->prepare($sql);
             $statement->bindParam(':expense_category_ids', $expense_category, PDO::PARAM_INT);
             $statement->bindParam(':user_id', $user->id, PDO::PARAM_INT);
