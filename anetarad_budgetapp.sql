@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Nov 10, 2021 at 11:27 PM
+-- Generation Time: Nov 16, 2021 at 07:31 PM
 -- Server version: 8.0.27
 -- PHP Version: 7.3.32
 
@@ -38,29 +38,6 @@ CREATE TABLE `expenses` (
   `comment` varchar(100) CHARACTER SET utf8 COLLATE utf8_polish_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8_polish_ci;
 
---
--- Dumping data for table `expenses`
---
-
-INSERT INTO `expenses` (`id`, `user_id`, `expense_category_assigned_to_user`, `amount`, `expense_date`, `payment_method_assigned_to_user`, `comment`) VALUES
-(1, 27, 3, 100.00, '2021-08-25', 2, ''),
-(2, 1, 2, 125.00, '2021-08-10', 2, ''),
-(3, 1, 2, 55.00, '2021-07-14', 2, ''),
-(6, 27, 4, 70.00, '2021-09-01', 2, 'Internet'),
-(7, 27, 3, 121.00, '2021-08-17', 3, 'Oopsie'),
-(8, 27, 14, 100.00, '2021-08-25', 1, 'BOOKS BOOKS'),
-(10, 27, 1, 100.00, '2021-10-15', 1, ''),
-(11, 27, 1, 350.49, '2021-10-22', 2, 'Test expense'),
-(12, 38, 1, 570.00, '2021-08-17', 58, 'Popo'),
-(13, 38, 1, 100.00, '2021-08-31', 57, 'test'),
-(14, 38, 1, 120.00, '2021-11-10', 57, 'Koko'),
-(15, 38, 1, 33.00, '2021-11-10', 57, 'koko hoho'),
-(16, 38, 1, 19.00, '2021-11-10', 57, 'test koko'),
-(17, 38, 1, 200.00, '2021-08-05', 58, 'nieprzekroczony'),
-(18, 44, 49, 50.00, '2021-11-10', 94, ''),
-(19, 44, 49, 20.00, '2021-08-05', 94, ''),
-(20, 44, 49, 10.00, '2021-11-10', 94, '');
-
 -- --------------------------------------------------------
 
 --
@@ -80,41 +57,23 @@ CREATE TABLE `expense_category_assigned_to_user` (
 --
 
 INSERT INTO `expense_category_assigned_to_user` (`user_id`, `expense_category_id`, `name`, `has_limit`, `expense_limit`) VALUES
-(44, 1, 'groceries', 0, 0.00),
-(44, 2, 'home & bills', 0, 0.00),
-(44, 3, 'car', 0, 0.00),
-(44, 4, 'phone & Internet', 0, 0.00),
-(44, 5, 'health care', 0, 0.00),
-(44, 6, 'clothes', 0, 0.00),
-(44, 7, 'beauty', 0, 0.00),
-(44, 8, 'kids', 0, 0.00),
-(44, 9, 'entertainment', 0, 0.00),
-(44, 10, 'travels', 0, 0.00),
-(44, 11, 'education', 0, 0.00),
-(44, 12, 'savings', 0, 0.00),
-(44, 13, 'debts', 0, 0.00),
-(44, 14, 'books', 0, 0.00),
-(44, 15, 'pension', 0, 0.00),
-(44, 16, 'charity', 0, 0.00),
-(44, 17, 'other expenses', 0, 0.00),
-(46, 18, 'groceries', 0, 0.00),
-(46, 19, 'home & bills', 0, 0.00),
-(46, 20, 'car', 0, 0.00),
-(46, 21, 'phone & Internet', 0, 0.00),
-(46, 22, 'health care', 0, 0.00),
-(46, 23, 'clothes', 0, 0.00),
-(46, 24, 'beauty', 0, 0.00),
-(46, 25, 'kids', 0, 0.00),
-(46, 26, 'entertainment', 0, 0.00),
-(46, 27, 'travels', 0, 0.00),
-(46, 28, 'education', 0, 0.00),
-(46, 29, 'savings', 0, 0.00),
-(46, 30, 'debts', 0, 0.00),
-(46, 31, 'books', 0, 0.00),
-(46, 32, 'pension', 0, 0.00),
-(46, 33, 'charity', 0, 0.00),
-(46, 34, 'other expenses', 0, 0.00),
-(44, 49, 'limitowana kategoria', 1, 100.00);
+(50, 146, 'groceries', 0, 0.00),
+(50, 147, 'home & bills', 0, 0.00),
+(50, 148, 'car', 0, 0.00),
+(50, 149, 'phone & Internet', 0, 0.00),
+(50, 150, 'health care', 0, 0.00),
+(50, 151, 'clothes', 0, 0.00),
+(50, 152, 'beauty', 0, 0.00),
+(50, 153, 'kids', 0, 0.00),
+(50, 154, 'entertainment', 0, 0.00),
+(50, 155, 'travels', 0, 0.00),
+(50, 156, 'education', 0, 0.00),
+(50, 157, 'savings', 0, 0.00),
+(50, 158, 'debts', 0, 0.00),
+(50, 159, 'books', 0, 0.00),
+(50, 160, 'pension', 0, 0.00),
+(50, 161, 'charity', 0, 0.00),
+(50, 162, 'other expenses', 0, 0.00);
 
 -- --------------------------------------------------------
 
@@ -170,16 +129,10 @@ CREATE TABLE `payment_method_assigned_to_user` (
 --
 
 INSERT INTO `payment_method_assigned_to_user` (`id`, `user_id`, `payment_method_id`, `name`) VALUES
-(57, 38, 0, 'BLIK'),
-(58, 38, 0, 'cash'),
-(94, 44, 1, 'cash'),
-(95, 44, 2, 'debit card'),
-(96, 44, 3, 'credit card'),
-(97, 44, 4, 'BLIK'),
-(108, 46, 1, 'cash'),
-(109, 46, 2, 'debit card'),
-(110, 46, 3, 'credit card'),
-(111, 46, 4, 'BLIK');
+(133, 50, 1, 'cash'),
+(134, 50, 2, 'debit card'),
+(135, 50, 3, 'credit card'),
+(136, 50, 4, 'BLIK');
 
 -- --------------------------------------------------------
 
@@ -217,24 +170,6 @@ CREATE TABLE `revenues` (
   `comment` varchar(100) CHARACTER SET utf8 COLLATE utf8_polish_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8_polish_ci;
 
---
--- Dumping data for table `revenues`
---
-
-INSERT INTO `revenues` (`id`, `user_id`, `revenue_category_assigned_to_user`, `amount`, `revenue_date`, `comment`) VALUES
-(3, 27, 2, 350.00, '2021-08-04', 'Shop'),
-(4, 6, 2, 1000.00, '2021-08-18', 'z sierpnia'),
-(5, 6, 2, 500.00, '2021-09-15', 'z wrzesnia'),
-(6, 6, 3, 55.00, '2021-08-05', ''),
-(7, 27, 4, 400.00, '2021-09-08', ''),
-(8, 6, 2, 100.00, '2021-09-11', ''),
-(9, 14, 4, 350.00, '2021-09-01', ''),
-(11, 27, 4, 56.00, '2021-08-24', '1200 PLUS'),
-(12, 27, 1, 350.00, '2021-10-15', ''),
-(13, 27, 1, 123.00, '2021-08-05', 'GAGAGA'),
-(14, 27, 3, 56.00, '2021-10-21', 'KO KO KO !'),
-(15, 27, 2, 49.22, '2021-10-22', 'Test income');
-
 -- --------------------------------------------------------
 
 --
@@ -253,19 +188,11 @@ CREATE TABLE `revenue_category_assigned_to_user` (
 --
 
 INSERT INTO `revenue_category_assigned_to_user` (`id`, `user_id`, `revenue_category_id`, `name`) VALUES
-(1, 38, 1, 'Salary'),
-(13, 38, 2, 'Passive income'),
-(14, 38, 4, 'Pension'),
-(24, 44, 1, 'Salary'),
-(25, 44, 2, 'Passive income'),
-(26, 44, 3, 'Investments'),
-(27, 44, 4, 'Pension'),
-(28, 44, 5, 'Other revenues'),
-(38, 46, 1, 'Salary'),
-(39, 46, 2, 'Passive income'),
-(40, 46, 3, 'Investments'),
-(41, 46, 4, 'Pension'),
-(42, 46, 5, 'Other revenues');
+(64, 50, 1, 'Salary'),
+(65, 50, 2, 'Passive income'),
+(66, 50, 3, 'Investments'),
+(67, 50, 4, 'Pension'),
+(68, 50, 5, 'Other revenues');
 
 -- --------------------------------------------------------
 
@@ -306,11 +233,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `username`, `password`) VALUES
-(19, 'franek', '$2y$10$IkPU4Lr4kcFk5.9S3g3aL.3P2JyluREWpwdI.30VITHPnMIzrjLkO'),
-(26, 'kokosza', '$2y$10$fWuq/f4yTaz5BSm7sUIsYu5rBBBd/K5MMkMl0Ce5YwwHpDV8GsEWu'),
-(27, 'programista', '$2y$10$NmuKODn3aS6qO6Yf3v5ycO.fkVjT8HyfRahUQ4Uw9eCf2vv58E9yS'),
-(44, 'testowy', '$2y$10$/A.l6g117YrfdABUzTmBE.KDpfBGwqn9/HR2URzNAn6eVm7bzJMzu'),
-(46, 'swinka', '$2y$10$4iLtWuzR0nAVygOrq3X6HO3OYKSQkue7hM3HqMaXbO1sRNTMhquxi');
+(50, 'swinka', '$2y$10$gBV6EZMr1B7gLts2E4RxT.AO7ZsxuLxLkvdLhMd/3COacrabblfke');
 
 --
 -- Triggers `users`
@@ -394,13 +317,13 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `expenses`
 --
 ALTER TABLE `expenses`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
 -- AUTO_INCREMENT for table `expense_category_assigned_to_user`
 --
 ALTER TABLE `expense_category_assigned_to_user`
-  MODIFY `expense_category_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=50;
+  MODIFY `expense_category_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=177;
 
 --
 -- AUTO_INCREMENT for table `expense_category_default`
@@ -412,7 +335,7 @@ ALTER TABLE `expense_category_default`
 -- AUTO_INCREMENT for table `payment_method_assigned_to_user`
 --
 ALTER TABLE `payment_method_assigned_to_user`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=115;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=140;
 
 --
 -- AUTO_INCREMENT for table `payment_method_default`
@@ -424,13 +347,13 @@ ALTER TABLE `payment_method_default`
 -- AUTO_INCREMENT for table `revenues`
 --
 ALTER TABLE `revenues`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT for table `revenue_category_assigned_to_user`
 --
 ALTER TABLE `revenue_category_assigned_to_user`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=71;
 
 --
 -- AUTO_INCREMENT for table `revenue_category_default`
@@ -442,7 +365,7 @@ ALTER TABLE `revenue_category_default`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=47;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

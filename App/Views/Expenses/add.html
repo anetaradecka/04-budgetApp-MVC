@@ -44,7 +44,9 @@
                             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                             body: `amount=${amount}&date=${date}&category=${category}&method=${method}&comment=${encodeURIComponent(comment)}`.replace(/%20/g, '+')
                         }).then(() => {
+                            const date = new Date();
                             document.querySelector('#add-expense-form').reset();
+                            document.querySelector('#expense-date').value = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate().toString().padStart(2, '0')}`;
                         });
                     }
                 })

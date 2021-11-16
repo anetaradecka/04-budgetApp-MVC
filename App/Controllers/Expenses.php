@@ -14,7 +14,7 @@ class Expenses extends Authenticated
         $limit_exceeded = Budget::validate($expense_id, $expense_amount);
 
         header('Content-Type: application/json; charset=utf-8');
-        header('X-Limit-Exceeded: ' . $limit_exceeded);
+        header('X-Limit-Exceeded: ' . json_encode($limit_exceeded));
         exit;
     }
 
@@ -29,5 +29,7 @@ class Expenses extends Authenticated
     public function submitAction()
     {
         Budget::addExpense();
+        header('Content-Type: application/json; charset=utf-8');
+        exit;
     }
 }

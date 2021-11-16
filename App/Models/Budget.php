@@ -79,8 +79,8 @@ class Budget extends \Core\Model
         if ($user) {
             $db = static::getDB();
             $sql = 'SELECT expense_category_assigned_to_user, amount, expense_date AS date, comment, name
-                    FROM expenses LEFT JOIN expense_category_default ON expenses.expense_category_assigned_to_user = expense_category_default.id
-                    WHERE user_id = :user_id AND expense_date BETWEEN :start_date AND :end_date';
+                    FROM expenses LEFT JOIN expense_category_assigned_to_user ON expenses.expense_category_assigned_to_user = expense_category_assigned_to_user.expense_category_id
+                    WHERE expense_category_assigned_to_user.user_id = :user_id AND expense_date BETWEEN :start_date AND :end_date';
             $start_date = static::getStartDate();
             $end_date = static::getEndDate();
             $statement = $db->prepare($sql);
@@ -363,7 +363,7 @@ class Budget extends \Core\Model
 
         // Czy po dodaniu $expense_amount przekroczymy limit dla tej kategorii?
         if ($expenseMetadata['has_limit']) {
-            return json_encode($currentMonthExpenses + $new_expense > $expense_limit);
+            return ($currentMonthExpenses + $new_expense) > $expense_limit;
         }
 
         return false;
