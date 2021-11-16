@@ -20,7 +20,10 @@ class Edit extends Authenticated
 
     public function expenseAction()
     {
+        $expense_updated = Budget::update();
+
         header('Content-Type: application/json; charset=utf-8');
+        header('X-Expense-Updated: ' . $expense_updated ? '1' : '0');
         exit;
     }
 }

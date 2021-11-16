@@ -292,6 +292,29 @@ class Budget extends \Core\Model
             $statement->execute();
         }
     }
+
+    public static function update() {
+        $user_id = htmlspecialchars($_GET['user_id']);
+        $name = htmlspecialchars($_GET['name']);
+        $has_limit = htmlspecialchars($_GET['has_limit']);
+        $expense_limit = htmlspecialchars($_GET['expense_limit']);
+        $expense_category_id = htmlspecialchars($_GET['expense_category_id']);
+
+        if (isset($user_id) && isset($name) && isset($has_limit) && isset($expense_limit)) {
+            $db = static::getDB();
+            $sql = 'update expense_category_assigned_to_user set name = :name, has_limit = :has_limit, expense_limit = :expense_limit where user_id = :user_id and expense_category_id = :expense_category_id';
+            $statement = $db->prepare($sql);
+            $statement->bindParam(':name', $name, PDO::PARAM_STR);
+            $statement->bindParam(':has_limit', $has_limit, PDO::PARAM_STR);
+            $statement->bindParam(':expense_limit', $expense_limit, PDO::PARAM_STR);
+            $statement->bindParam(':expense_category_id', $expense_category_id, PDO::PARAM_STR);
+            $statement->bindParam(':user_id', $user_id, PDO::PARAM_INT);
+            $statement->execute();
+            return true;
+        }
+
+        return false;
+    }
     
     public static function edit() {
         static::deleteRevenueCategory();

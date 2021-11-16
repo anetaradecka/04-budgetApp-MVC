@@ -117,12 +117,10 @@
 
                         document.querySelector('#save-button').addEventListener('click', () => {
                             const name = document.querySelector('#edit-name').value;
-                            const expenseLimit = document.querySelector('#edit-expense-limit').value;
                             const hasLimit = document.querySelector('#edit-has-limit').checked ? '1' : '0';
+                            const expenseLimit = document.querySelector('#edit-expense-limit').value;
 
-                            fetch(`//budget.anetaradecka.pl/Edit/expense?user_id=${userId}&name=${name}&has_limit=${hasLimit}&expense_limit=${expenseLimit}`)
-                                .then(console.log)
-                                // .finally(location.reload);
+                            fetch(`//budget.anetaradecka.pl/Edit/expense?user_id=${userId}&name=${name}&has_limit=${hasLimit}&expense_limit=${expenseLimit}&expense_category_id=${expenseCategoryId}`).finally(() => location.reload());
                         });
                     }
                 });
