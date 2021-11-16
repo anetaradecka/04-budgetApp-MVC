@@ -4,8 +4,8 @@
 </header>
 
 <div class="container p-3">
-    <div class="alert alert-success" style="width: 100%;" role="alert" id="success-alert">New expense has been added.</div>
-    <div class="alert alert-danger" style="width: 100%;" role="alert" id="danger-alert">New expense would exceed the limit!</div>
+    <div class="alert alert-success" style="width: 100%;" role="alert" id="success-alert">New expense doesn't exceed the limit.</div>
+    <div class="alert alert-danger" style="width: 100%;" role="alert" id="danger-alert">New expense exceeds the limit.</div>
 
     <script>
         const successAlert = document.querySelector('#success-alert');
@@ -24,32 +24,51 @@
             };
         }
 
-        function validateExpense(event) {
+        function validateExpense() {
             const { amount, date, category, method, comment } = getFormValue();
 
-            fetch(`//budget.anetaradecka.pl/Expenses/validate?id=${category}&amount=${amount}`)
+            return fetch(`//budget.anetaradecka.pl/Expenses/validate?id=${category}&amount=${amount}`)
                 .then(response => response.headers.get('X-Limit-Exceeded'))
                 .then(limitExceeded => {
                     if (limitExceeded === 'true') {
                         successAlert.style.display = 'none';
                         dangerAlert.style.display = 'block';
+                        return true;
                     }
                     
                     if (limitExceeded === 'false') {
                         successAlert.style.display = 'block';
                         dangerAlert.style.display = 'none';
+                        return false;
+                    }
+                });
+        }
 
-                        return fetch('//budget.anetaradecka.pl/Expenses/submit', {
+        function saveExpense() {
+            const { amount, date, category, method, comment } = getFormValue();
+
+            return validateExpense().then(limitExceeded => {
+                if (limitExceeded) {
+                    successAlert.style.display = 'none';
+                    dangerAlert.style.display = 'block';
+                    return Promise.reject(limitExceeded);
+                } else {
+                    return fetch('//budget.anetaradecka.pl/Expenses/submit', {
                             method: 'POST',
                             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                             body: `amount=${amount}&date=${date}&category=${category}&method=${method}&comment=${encodeURIComponent(comment)}`.replace(/%20/g, '+')
                         }).then(() => {
                             const date = new Date();
+                            const year = date.getFullYear();
+                            const month = date.getMonth() + 1;
+                            const day = date.getDate().toString().padStart(2, '0');
                             document.querySelector('#add-expense-form').reset();
-                            document.querySelector('#expense-date').value = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate().toString().padStart(2, '0')}`;
+                            document.querySelector('#expense-date').value = `${year}-${month}-${day}`;
+                            successAlert.style.display = 'block';
+                            dangerAlert.style.display = 'none';
                         });
-                    }
-                })
+                }
+            })
         }
     </script>
 
@@ -109,11 +128,17 @@
         <div class="row">
             <div class="col col-12">
                 <div class="d-flex justify-content-center gap-2 mb-5">
-                    <button type="button" class="btn btn-warning" onclick="validateExpense()">Add expense</button>
+                    <button type="button" class="btn btn-warning" onclick="saveExpense()">Add expense</button>
                     <button type="reset" class="btn btn-light">Cancel</button>
                 </div>
             </div>
         </div>
+
+        <script>
+            document.querySelector('#amount').addEventListener('blur', event => {
+                validateExpense();
+            });
+        </script>
     </form>
 </div>
 {% endblock %}
