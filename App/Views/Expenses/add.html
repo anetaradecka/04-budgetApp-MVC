@@ -6,139 +6,123 @@
 <div class="container p-3">
     <div class="alert alert-success" style="width: 100%;" role="alert" id="success-alert">New expense doesn't exceed the limit.</div>
     <div class="alert alert-danger" style="width: 100%;" role="alert" id="danger-alert">New expense exceeds the limit.</div>
-
     <script>
-        const successAlert = document.querySelector('#success-alert');
-        const dangerAlert = document.querySelector('#danger-alert');
-
-        successAlert.style.display = 'none';
-        dangerAlert.style.display = 'none';
-
-        function getFormValue() {
-            return {
-                amount: document.querySelector('#amount').value,
-                date: document.querySelector('#expense-date').value,
-                category: document.querySelector('#category').value,
-                method: document.querySelector('#method').value,
-                comment: document.querySelector('#comment').value
-            };
-        }
-
-        function validateExpense() {
-            const { amount, date, category, method, comment } = getFormValue();
-
-            return fetch(`//budget.anetaradecka.pl/Expenses/validate?id=${category}&amount=${amount}`)
-                .then(response => response.headers.get('X-Limit-Exceeded'))
-                .then(limitExceeded => {
-                    if (limitExceeded === 'true') {
-                        successAlert.style.display = 'none';
-                        dangerAlert.style.display = 'block';
-                        return true;
-                    }
-                    
-                    if (limitExceeded === 'false') {
-                        successAlert.style.display = 'block';
-                        dangerAlert.style.display = 'none';
-                        return false;
-                    }
-                });
-        }
-
-        function saveExpense() {
-            const { amount, date, category, method, comment } = getFormValue();
-
-            return validateExpense().then(limitExceeded => {
-                if (limitExceeded) {
-                    successAlert.style.display = 'none';
-                    dangerAlert.style.display = 'block';
-                    return Promise.reject(limitExceeded);
-                } else {
-                    return fetch('//budget.anetaradecka.pl/Expenses/submit', {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                            body: `amount=${amount}&date=${date}&category=${category}&method=${method}&comment=${encodeURIComponent(comment)}`.replace(/%20/g, '+')
-                        }).then(() => {
-                            const date = new Date();
-                            const year = date.getFullYear();
-                            const month = date.getMonth() + 1;
-                            const day = date.getDate().toString().padStart(2, '0');
-                            document.querySelector('#add-expense-form').reset();
-                            document.querySelector('#expense-date').value = `${year}-${month}-${day}`;
-                            successAlert.style.display = 'block';
-                            dangerAlert.style.display = 'none';
-                        });
-                }
-            })
-        }
+       const successAlert = document.querySelector('#success-alert');
+       const dangerAlert = document.querySelector('#danger-alert');
+       
+       successAlert.style.display = 'none';
+       dangerAlert.style.display = 'none';
+       
+       function getFormValue() {
+           return {
+               amount: document.querySelector('#amount').value,
+               date: document.querySelector('#expense-date').value,
+               category: document.querySelector('#category').value,
+               method: document.querySelector('#method').value,
+               comment: document.querySelector('#comment').value
+           };
+       }
+       
+       function validateExpense() {
+           const { amount, date, category, method, comment } = getFormValue();
+       
+           return fetch(`//budget.anetaradecka.pl/Expenses/validate?id=${category}&amount=${amount}`)
+               .then(response => response.headers.get('X-Limit-Exceeded'))
+               .then(limitExceeded => {
+                   if (limitExceeded === 'true') {
+                       successAlert.style.display = 'none';
+                       dangerAlert.style.display = 'block';
+                       return true;
+                   }
+                   
+                   if (limitExceeded === 'false') {
+                       successAlert.style.display = 'block';
+                       dangerAlert.style.display = 'none';
+                       return false;
+                   }
+               });
+       }
+       
+       function saveExpense() {
+           const { amount, date, category, method, comment } = getFormValue();
+       
+           return fetch('//budget.anetaradecka.pl/Expenses/submit', {
+                           method: 'POST',
+                           headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                           body: `amount=${amount}&date=${date}&category=${category}&method=${method}&comment=${encodeURIComponent(comment)}`.replace(/%20/g, '+')
+                       }).then(() => {
+                           const date = new Date();
+                           const year = date.getFullYear();
+                           const month = date.getMonth() + 1;
+                           const day = date.getDate().toString().padStart(2, '0');
+                           document.querySelector('#add-expense-form').reset();
+                           document.querySelector('#expense-date').value = `${year}-${month}-${day}`;
+                           successAlert.style.display = 'none';
+                           dangerAlert.style.display = 'none';
+                       });
+       }
     </script>
-
     <form id="add-expense-form">
-        <div>
-            <div class="row mt-3">
-                <div class="col col-xs-6">
-                    <div class="input-group mb-3">
-                        <span class="input-group-text">PLN</span>
-                        <input type="text" name="amount" class="form-control" id="amount" aria-label="Dollar amount (with dot and two decimal places)">
-                    </div>
+       <div>
+          <div class="row mt-3">
+             <div class="col col-xs-6">
+                <div class="input-group mb-3">
+                   <span class="input-group-text">PLN</span>
+                   <input type="text" name="amount" class="form-control" id="amount" aria-label="Dollar amount (with dot and two decimal places)">
                 </div>
-                <div class="col col-xs-6">
-                    <input type="date" class="form-control myDate" id="expense-date" name="date" value="" required />
+             </div>
+             <div class="col col-xs-6">
+                <input type="date" class="form-control myDate" id="expense-date" name="date" value="" required />
+             </div>
+             <script>
+                const now = new Date();
+                document.querySelector('#expense-date').value = `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`;
+             </script>
+          </div>
+          <div class="row">
+             <div class="col col-xs-12">
+                <div class="input-group mb-3">
+                   <select class="form-select" id="category" name="category" aria-label="Default select example">
+                      <option disabled>Select expense category</option>
+                      {% for category in expense_categories %}
+                      <option value="{{category.expense_category_id}}">{{category.name}}</option>
+                      {% endfor %}
+                   </select>
                 </div>
-                <script>
-                    const now = new Date();
-                    document.querySelector('#expense-date').value = `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`;
-                </script>
-            </div>
-    
-            <div class="row">
-                <div class="col col-xs-12">
-                    <div class="input-group mb-3">
-                        <select class="form-select" id="category" name="category" aria-label="Default select example">
-                            <option disabled>Select expense category</option>
-                            {% for category in expense_categories %}
-                            <option value="{{category.expense_category_id}}">{{category.name}}</option>
-                            {% endfor %}
-                        </select>
-                    </div>
+             </div>
+          </div>
+          <div class="row">
+             <div class="col col-xs-12">
+                <div class="input-group mb-3">
+                   <select class="form-select" id="method" name="method" aria-label="Default select example">
+                      <option disabled>Select payment method</option>
+                      {% for method in payment_methods %}
+                      <option value="{{method.id}}">{{method.name}}</option>
+                      {% endfor %}
+                   </select>
                 </div>
-            </div>
-    
-            <div class="row">
-                <div class="col col-xs-12">
-                    <div class="input-group mb-3">
-                        <select class="form-select" id="method" name="method" aria-label="Default select example">
-                            <option disabled>Select payment method</option>
-                            {% for method in payment_methods %}
-                            <option value="{{method.id}}">{{method.name}}</option>
-                            {% endfor %}
-                        </select>
-                    </div>
+             </div>
+          </div>
+          <div class="row">
+             <div class="col col-xs-12">
+                <div class="input-group mb-3">
+                   <textarea class="form-control" id="comment" name="comment" maxlength="100" rows="6" placeholder="Leave a comment here"></textarea>
                 </div>
-            </div>
-    
-            <div class="row">
-                <div class="col col-xs-12">
-                    <div class="input-group mb-3">
-                        <textarea class="form-control" id="comment" name="comment" maxlength="100" rows="6" placeholder="Leave a comment here"></textarea>
-                    </div>
-                </div>
-            </div>
-        </div>
-    
-        <div class="row">
-            <div class="col col-12">
-                <div class="d-flex justify-content-center gap-2 mb-5">
-                    <button type="button" class="btn btn-warning" onclick="saveExpense()">Add expense</button>
-                    <button type="reset" class="btn btn-light">Cancel</button>
-                </div>
-            </div>
-        </div>
-
-        <script>
-            document.querySelector('#amount').addEventListener('blur', event => {
-                validateExpense();
-            });
-        </script>
+             </div>
+          </div>
+       </div>
+       <div class="row">
+          <div class="col col-12">
+             <div class="d-flex justify-content-center gap-2 mb-5">
+                <button type="button" class="btn btn-warning" onclick="saveExpense()">Add expense</button>
+                <button type="reset" class="btn btn-light">Cancel</button>
+             </div>
+          </div>
+       </div>
+       <script>
+          document.querySelector('#amount').addEventListener('blur', validateExpense);
+          document.querySelector('#category').addEventListener('change', validateExpense);
+       </script>
     </form>
-</div>
+ </div>
 {% endblock %}
